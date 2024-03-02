@@ -1,0 +1,102 @@
+body {
+    background-color: #774914;
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    height: 100vh; 
+    margin: 0;
+}
+
+.chess-board-container { 
+    position: relative; 
+    box-shadow: 0 15px 15px black; 
+}
+
+.chess-board { 
+    display: grid; 
+    grid-template-columns: repeat(8, 50px); 
+    grid-template-rows: repeat(8, 50px);
+    border: 15px solid #4e300d; 
+    } 
+
+.chess-tile { 
+    position: relative;
+    width: 50px; 
+    height: 50px;
+} 
+
+.chess-piece { 
+    position: absolute;
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+    bottom: 1px;
+    right: 1px;
+    cursor: pointer;
+}
+
+.moves-class { 
+    position: absolute; 
+    width: 100%;
+    height: 100%;
+    background-color: blue; 
+    opacity: 0.3;
+    cursor: pointer;
+}
+
+.selected {
+    border: 4px solid #6ae0ff; 
+}
+
+.positionButtons {
+    background-color: orange;
+    border-color: orange;
+    position: absolute;
+}
+
+#startPositionBoard {
+    top: 30%;
+    left: 80%;
+    height: 10%;    
+}
+
+#testPositionBoard {
+    top: 50%;
+    left: 80%;
+    height: 10%;
+}
+
+#showAttackedTiles {
+    top: 10%;
+    left: 80%;
+    height: 10%;
+}
+
+#promotionChoice {
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 500px;
+    height: 250px;
+    background-color: black;
+    visibility: hidden;
+    opacity: 0.5;
+}
+
+.choices {
+    box-sizing: border-box;
+}
+@media (orientation: portrait) {
+#startPositionBoard {
+    top: 85%;
+    left: 30%;
+    height: 10%;    
+}
+
+#testPositionBoard {
+    top: 85%;
+    left: 50%;
+    height: 10%;
+}
+}

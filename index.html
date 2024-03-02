@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Page title</title>
+    <link rel="stylesheet" href="myStyles.css">
+    <script src="legalMoves.js"></script>
+    <script src="gameStarter.js"></script>
+</head>
+<body>
+    <div class="chess-board-container">
+        <div class="chess-board" id = "chessBoard"></div>
+    </div>
+    <p id = 'test'>Test Text</p>
+    <Button class = "positionButtons" id = "startPositionBoard" onClick = "rearrangeBoard(startPosition)">Start Position</Button>
+    <Button class = "positionButtons" id = "testPositionBoard" onClick = "rearrangeBoard(testPosition)">testPosition</Button>
+    <Button class = "positionButtons" id = "showAttackedTiles" onClick = "showAttackedTiles()">Show</Button>
+    <div id = "promotionChoice">
+        <button id = "queenButton" class = "choices">Queen</button>
+        <button id = "rookButton" class = "choices">Rook</button>
+        <button id = "bishopButton" class = "choices">Bishop</button>
+        <button id = "knightButton" class = "choices">Knight</button>
+    </div>
+</body>
+</html>
