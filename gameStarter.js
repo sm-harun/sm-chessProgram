@@ -1,16 +1,28 @@
 let startPosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 let testPosition = '8/2P2P2/8/8/8/8/p2p4/8 w KQkq - 0 1';
 let turn = true;
-var clickedPiece;
 
 let board = new Array(64).fill(0);
+
+// We use these varibles instead of rewriting all the directories.
+let whitePawn = 'Pawn_white.png';
+let whiteKnight = 'Knight_white.png';
+let whiteBishop = 'Bishop_white.png';
+let whiteRook = 'Rook_white.png';
+let whiteQueen = 'Queen_white.png';
+let whiteKing = 'King_white.png'
+
+let blackPawn = 'Pawn_black.png';
+let blackKnight = 'Knight_black.png';
+let blackBishop = 'Bishop_black.png';
+let blackRook = 'Rook_black.png';
+let blackQueen = 'Queen_black.png';
+let blackKing = 'King_black.png';
 
 document.addEventListener("DOMContentLoaded", function() {
   
     createChessBoard();
-    deployPieces(testPosition);
-    let test = document.getElementById('test');
-    test.textContent = ("").toString();
+    deployPieces(startPosition);
     
 });
     
@@ -142,40 +154,40 @@ document.addEventListener("DOMContentLoaded", function() {
             
             switch(board[j]) {
                 case 1:
-                    chessPiece.src = 'Pawn_white.png';
+                    chessPiece.src = whitePawn;
                     break;
                 case 2:
-                    chessPiece.src = 'Knight_white.png';
+                    chessPiece.src = whiteKnight;
                     break;        
                 case 3:
-                    chessPiece.src = 'Bishop_white.png';
+                    chessPiece.src = whiteBishop;
                     break;        
                 case 4:
-                    chessPiece.src = 'Rock_white.png';
+                    chessPiece.src = whiteRook;
                     break;        
                 case 5:
-                    chessPiece.src = 'Queen_white.png';
+                    chessPiece.src = whiteQueen;
                     break;        
                 case 6:
-                    chessPiece.src = 'King_white.png';
+                    chessPiece.src = whiteKing;
                     break;        
                 case -1:
-                    chessPiece.src = 'Pawn_black.png';
+                    chessPiece.src = blackPawn;
                     break;        
                 case -2:
-                    chessPiece.src = 'Knight_black.png';
+                    chessPiece.src = blackKnight;
                     break;        
                 case -3:
-                    chessPiece.src = 'Bishop_black.png';
+                    chessPiece.src = blackBishop;
                     break;        
                 case -4:
-                    chessPiece.src = 'Rock_black.png';
+                    chessPiece.src = blackRook;
                     break;        
                 case -5:
-                    chessPiece.src = 'Queen_black.png';
+                    chessPiece.src = blackQueen;
                     break;        
                 case -6:
-                    chessPiece.src = 'King_black.png';
+                    chessPiece.src = blackKing;
                     break;        
             }
             
@@ -199,7 +211,7 @@ document.addEventListener("DOMContentLoaded", function() {
         
         // This will return an array with all the legal moves set to one.      
         let legalMoves = legalMovesOfPieces(board, chessPiece.parentNode.id); 
-        clickedPiece = board[chessPiece.parentNode.id]; 
+        let clickedPiece = board[chessPiece.parentNode.id]; 
         
         let isItAPawn = board[chessPiece.parentNode.id] == 1 || board[chessPiece.parentNode.id] == -1;
         let pieceIsBlack = board[chessPiece.parentNode.id] < 0;
@@ -224,41 +236,41 @@ document.addEventListener("DOMContentLoaded", function() {
                            
             moves.addEventListener('click', function () { 
                 
-                // Here it promotes a pawn(Just to a queen for the moment) if it hit the last rank.
-                if (isItAPawn) {
-                    if (pieceIsBlack && -moves.id > 55) {
-                        promotion(chessPiece, "black");
-                    } else if (pieceIsBlack == false && -moves.id < 8) {
-                        promotion(chessPiece, "white");
-                    }
+                // Here if it is a promoting pawn it will excute a function.
+                if (isItAPawn && (pieceIsBlack && -moves.id > 55)) {
+                    promotion(chessPiece, "black", moves, board);
+                } else if (isItAPawn && (pieceIsBlack == false && -moves.id < 8)) {
+                    promotion(chessPiece, "white", moves, board);
+                } else {
+                    movesEventListner(chessPiece, board, moves, clickedPiece);
                 }
-                
-                // Update the board array of the current position. 
-                board[chessPiece.parentNode.id] = 0; 
-                board[-moves.id] = clickedPiece; 
-                                    
-                // Here it removes pieces from a tile first and then puts the new one. 
-                const movedTile = document.getElementById(-moves.id); 
-                movedTile.removeChild(movedTile.firstChild); 
-                document.getElementById(-moves.id).appendChild(chessPiece); 
-                                    
-                // This removes all the move squares. 
-                const movesClass = document.getElementsByClassName('moves-class');
-                const movesArray = Array.from(movesClass); 
-                movesArray.forEach(element => element.remove()); 
-               
-                // Switches the turns for a different colour.
-                if (turn == true) { 
-                    turn = false 
-                } else if (turn == false) { 
-                    turn = true 
-                }
-                    
             });  
         }
     }
     
-    function promotion(chessPiece, pieceColor) {
+    
+    function movesEventListner(chessPiece, board, moves, clickedPiece) {
+    
+        // Update the board array of the current position. 
+        board[chessPiece.parentNode.id] = 0; 
+        board[-moves.id] = clickedPiece; 
+                                    
+        // Here it removes pieces from a tile first and then puts the new one. 
+        const movedTile = document.getElementById(-moves.id); 
+        movedTile.removeChild(movedTile.firstChild); 
+        document.getElementById(-moves.id).appendChild(chessPiece); 
+                                    
+         // This removes all the move squares. 
+         const movesClass = document.getElementsByClassName('moves-class');
+         const movesArray = Array.from(movesClass); 
+         movesArray.forEach(element => element.remove()); 
+               
+         // Switches the turns for a different colour.
+         if (turn == true) { turn = false } 
+         else if (turn == false) { turn = true }
+    }
+    
+    function promotion(chessPiece, pieceColor, moves, board) {
         
          let promotionChoice = document.getElementById("promotionChoice");
          promotionChoice.style.visibility = "visible";
@@ -291,16 +303,16 @@ document.addEventListener("DOMContentLoaded", function() {
     		let knightImage = document.createElement("img");
     		
     		// Changes the colors of the piece image depending on who is promoting.
-    		if(pieceColor = "white") {
-    		    queenImage.src = "Queen_white.png";
-    		    rookImage.src = "Rock_white.png";
-    		    bishopImage.src = "Bishop_white.png";
-    		    knightImage.src = "Knight_white.png";
+    		if(pieceColor == "white") {
+    		    queenImage.src = whiteQueen;
+    		    rookImage.src = whiteRook;
+    		    bishopImage.src = whiteBishop;
+    		    knightImage.src = whiteKnight;
     		} else {
-    		    queenImage.src = "Queen_black.png";
-    		    rookImage.src = "Rock_black.png";
-    		    bishopImage.src = "Bishop_black.png";
-    		    knightImage.src = "Knight_black.png";
+    		    queenImage.src = blackQueen;
+    		    rookImage.src = blackRook;
+    		    bishopImage.src = blackBishop;
+    		    knightImage.src = blackKnight;
     		}
     		
     		queenImage.classList.add("chess-Pieces");
@@ -315,65 +327,65 @@ document.addEventListener("DOMContentLoaded", function() {
     		
     		queenChoice.addEventListener('click', function () {
     		    if (pieceColor == "white") {
-    		        chessPiece.src = "Queen_white.png";
+    		        chessPiece.src = whiteQueen;
     		        clickedPiece = 5;
     		    } else {
-    		        chessPiece.src = "Queen_black.png";
+    		        chessPiece.src = blackQueen;
     		        clickedPiece = -5;
     		    }
-    		    // It removes the popUp after player has chosen.
-    		    promotionChoice.style.visibility = "hidden";
-    		    queenChoice.remove();
-    		    rookChoice.remove();
-    		    bishopChoice.remove();
-    		    knightChoice.remove();
+    		    // Here it applys the moves listner after a piece has been chosen.
+    		    movesEventListner(chessPiece, board, moves, clickedPiece);
+    		    removePromotionPopup();
     		});
     		
     		rookChoice.addEventListener('click', function () {
     		    if (pieceColor == "white") {
-    		        chessPiece.src = "Rock_white.png";
+    		        chessPiece.src = whiteRook;
     		        clickedPiece = 4;
     		    } else {
-    		        chessPiece.src = "Rock_black.png";
+    		        chessPiece.src = blackRook;
     		        clickedPiece = -4;
     		    }
-    		    
-    		    promotionChoice.style.visibility = "hidden";
-    		    queenChoice.remove();
-    		    rookChoice.remove();
-    		    bishopChoice.remove();
-    		    knightChoice.remove();
+    		    movesEventListner(chessPiece, board, moves, clickedPiece);
+    		    removePromotionPopup();
     		});
     		
     		bishopChoice.addEventListener('click', function () {
     		    if (pieceColor == "white") {
-    		        chessPiece.src = "Bishop_white.png";
+    		        chessPiece.src = whiteBishop;
     		        clickedPiece = 3;
     		    } else {
-    		        chessPiece.src = "Bishop_black.png";
+    		        chessPiece.src = blackBishop;
     		        clickedPiece = -3;
     		    }
-    		    
-    		    promotionChoice.style.visibility = "hidden";
-    		    queenChoice.remove();
-    		    rookChoice.remove();
-    		    bishopChoice.remove();
-    		    knightChoice.remove();
+    		    movesEventListner(chessPiece, board, moves, clickedPiece);
+    		    removePromotionPopup();
     		});
     		
     		knightChoice.addEventListener('click', function () {
     		    if (pieceColor == "white") {
-    		        chessPiece.src = "Knight_white.png";
+    		        chessPiece.src = whiteKnight;
     		        clickedPiece = 2;
     		    } else {
-    		        chessPiece.src = "Knight_black.png";
+    		        chessPiece.src = blackKnight;
     		        clickedPiece = -2;
     		    }
-    		    
-    		    promotionChoice.style.visibility = "hidden";
-    		    queenChoice.remove();
-    		    rookChoice.remove();
-    		    bishopChoice.remove();
-    		    knightChoice.remove();
+    		    movesEventListner(chessPiece, board, moves, clickedPiece);
+    		    removePromotionPopup();
     		});
+    }
+    
+    function removePromotionPopup() {
+    
+        let promotionChoice = document.getElementById("promotionChoice");
+        let queenChoice = document.getElementById("queenChoice");
+        let rookChoice = document.getElementById("rookChoice");
+        let bishopChoice = document.getElementById("bishopChoice");
+        let knightChoice = document.getElementById("knightChoice");
+        
+        promotionChoice.style.visibility = "hidden";
+    	  queenChoice.remove();
+    	  rookChoice.remove();
+    	  bishopChoice.remove();
+    	  knightChoice.remove();
     }
