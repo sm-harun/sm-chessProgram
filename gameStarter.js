@@ -22,7 +22,7 @@ let blackKing = 'King_black.png';
 document.addEventListener("DOMContentLoaded", function() {
   
     createChessBoard();
-    deployPieces(testPosition);
+    deployPieces(startPosition);
     
 });
     
