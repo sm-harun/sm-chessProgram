@@ -1,10 +1,10 @@
 let startPosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-let testPosition = '8/2P2P2/8/8/8/8/p2p4/8 w KQkq - 0 1';
+let testPosition = '8/8/8/8/4k3/7K/8/8 w KQkq - 0 1';
 let turn = true;
 
 let board = new Array(64).fill(0);
 
-// We use these varibles instead of rewriting all the directories.
+// We use these varibles instead of rewriting all the paths.
 let whitePawn = 'Pawn_white.png';
 let whiteKnight = 'Knight_white.png';
 let whiteBishop = 'Bishop_white.png';
@@ -22,15 +22,12 @@ let blackKing = 'King_black.png';
 document.addEventListener("DOMContentLoaded", function() {
   
     createChessBoard();
-    deployPieces(startPosition);
+    deployPieces(testPosition);
     
 });
     
     function showAttackedTiles(board) {
-         
-         let promotionChoice = document.getElementById("promotionChoice");
-         promotionChoice.style.visibility = "visible";
-        
+    
     }
     
     function rearrangeBoard(position) {
@@ -236,7 +233,7 @@ document.addEventListener("DOMContentLoaded", function() {
                            
             moves.addEventListener('click', function () { 
                 
-                // Here if it is a promoting pawn it will excute a function.
+                // Here if it is a promoting pawn it will excute a function or else it uses the normal move function.
                 if (isItAPawn && (pieceIsBlack && -moves.id > 55)) {
                     promotion(chessPiece, "black", moves, board);
                 } else if (isItAPawn && (pieceIsBlack == false && -moves.id < 8)) {

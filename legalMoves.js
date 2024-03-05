@@ -56,6 +56,14 @@
             let returnOfFunction = reverseBoard(board, index);
             board = returnOfFunction[0];
             index = returnOfFunction[1];
+        } else {
+            let returnOfFunction = reverseBoard(board, index);
+            board = returnOfFunction[0];
+            index = returnOfFunction[1];
+            
+            returnOfFunction = reverseBoard(board, index);
+            board = returnOfFunction[0];
+            index = returnOfFunction[1];
         }
         
         let legalPawnMove = new Array(64).fill(0);
@@ -70,10 +78,10 @@
         }
         
         // Captures side ways for the pawn.
-        if (board[index-9] < 0) {
+        if (board[index-9] < 0 && !leftBorderIndexes.includes(index)) {
             legalPawnMove[index-9] = 1;
         }
-        if (board[index-7] < 0) {
+        if (board[index-7] < 0 && !rightBorderIndexes.includes(index)) {
             legalPawnMove[index-7] = 1;
         }
         
@@ -87,7 +95,8 @@
     
     function legalKnightMoves(board, index, PieceIsBlack) {
 
-        // Check if the piece is black.
+        // For some reason the reverseBoard function fixes an issue where pieces can't move backwards.
+        // So I just did it twice for the white pieces and it works. I will try fixing the core problem later. 
         if (PieceIsBlack) {
             // Reverse the board before calculating legal moves.    
             let returnOfFunction = reverseBoard(board, index);
@@ -221,8 +230,6 @@
             let returnOfFunction = reverseBoard(board, index);
             board = returnOfFunction[0];
             index = returnOfFunction[1];
-       // For some reason the reverseBoard function fixes an issue where pieces can't move backwards.
-       // So I just did it twice for the white pieces and it works. I will try fixing the core problem later.     
        } else {
             let returnOfFunction = reverseBoard(board, index);
             board = returnOfFunction[0];
@@ -338,17 +345,40 @@
         
         let legalMoves = new Array(64).fill(0);
         
-        let attackedTiles = attackedSquares(board);
+        // This will be used later to filter out attacked squares.
+        let attackedTiles = new Array(64).fill(0);
         
-        // All the legal moves without counting checks and checkmates.
-        if (board[index + 1] <= 0 && attackedTiles[index + 1] == 0) { legalMoves[index + 1] = 1 }
-        if (board[index - 1] <= 0 && attackedTiles[index - 1] == 0) { legalMoves[index - 1] = 1 }
-        if (board[index + 8] <= 0 && attackedTiles[index + 8] == 0) { legalMoves[index + 8] = 1 }
-        if (board[index - 8] <= 0 && attackedTiles[index - 8] == 0) { legalMoves[index - 8] = 1 }
-        if (board[index + 9] <= 0 && attackedTiles[index + 9] == 0) { legalMoves[index + 9] = 1 }
-        if (board[index - 9] <= 0 && attackedTiles[index - 9] == 0) { legalMoves[index - 9] = 1 }
-        if (board[index + 7] <= 0 && attackedTiles[index + 7] == 0) { legalMoves[index + 7] = 1 }
-        if (board[index - 7] <= 0 && attackedTiles[index - 7] == 0) { legalMoves[index - 7] = 1 }
+        // Here it first assign's all 8 moves as legal.
+        if (board[index - 8] <= 0) { legalMoves[index - 8] = 1; }
+        if (board[index - 9] <= 0) { legalMoves[index - 9] = 1; }
+        if (board[index - 7] <= 0) { legalMoves[index - 7] = 1; }
+        if (board[index + 8] <= 0) { legalMoves[index + 8] = 1 }
+        if (board[index + 9] <= 0) { legalMoves[index + 9] = 1 }
+        if (board[index + 7] <= 0) { legalMoves[index + 7] = 1 }
+        if (board[index + 1] <= 0) { legalMoves[index + 1] = 1 }
+        if (board[index - 1] <= 0) { legalMoves[index - 1] = 1 }
+        
+        // Here it filters out moves that go over the border.
+        if(upBorderIndexes.includes(index)) {
+            legalMoves[index - 9] = 0;
+            legalMoves[index - 8] = 0;
+            legalMoves[index - 7] = 0;
+        }
+        if(downBorderIndexes.includes(index)) {
+            legalMoves[index + 9] = 0;
+            legalMoves[index + 8] = 0;
+            legalMoves[index + 7] = 0;
+        }
+        if(rightBorderIndexes.includes(index)) {
+            legalMoves[index - 7] = 0;
+            legalMoves[index + 1] = 0;
+            legalMoves[index + 9] = 0;
+        }
+        if(leftBorderIndexes.includes(index)) {
+            legalMoves[index - 9] = 0;
+            legalMoves[index - 1] = 0;
+            legalMoves[index + 7] = 0;
+        }
         
         if (PieceIsBlack) {
             returnOfFunction = reverseBoard(legalMoves, index);
