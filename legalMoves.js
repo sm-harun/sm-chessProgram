@@ -50,6 +50,7 @@
         }
     }
     
+    
     function legalPawnMoves(board, index, PieceIsBlack) {
         
         if (PieceIsBlack) {
@@ -346,7 +347,7 @@
         let legalMoves = new Array(64).fill(0);
         
         // This will be used later to filter out attacked squares.
-        let attackedTiles = new Array(64).fill(0);
+        let attackedTiles = attackedSquares(board);
         
         // Here it first assign's all 8 moves as legal.
         if (board[index - 8] <= 0) { legalMoves[index - 8] = 1; }
@@ -380,6 +381,12 @@
             legalMoves[index + 7] = 0;
         }
         
+        for (i = 0; i < 64; i++) {
+            if (attackedTiles[i] == 1) {
+                legalMoves[i] = 0;
+            }
+        }
+        
         if (PieceIsBlack) {
             returnOfFunction = reverseBoard(legalMoves, index);
             return returnOfFunction[0];
@@ -389,24 +396,35 @@
     
     function attackedSquares(board) {
         
-        let movesOfBlack;
-        let attackedTiles = new Array(64).fill(0);
+        let allAttackedSquares = new Array(64).fill(0);
         
-        for(let k = 0; k <= 63; k++)  {
-            
-            if(board[k] < 0) {
-            
-                movesOfBlack = legalMovesOfPieces(board, i);
-                
-                for (let j = 0; j <= 63; j++) {
-                    if (movesOfBlack[j] == 1) {
-                        attackedTiles[j] = 1;
-                    }
-                }
+        let amountOfPieces = 0;
+        let pieceIndexes = new Array(16);
+        let index = 0;
+        
+        for (i = 0; i < 64; i++) {
+            if (board[i] < 0 && board[i] != -6) {
+                amountOfPieces++;
+                pieceIndexes[index] = i;
+                index++;
             }
         }
         
-        return attackedTiles;
+        let all;
+        
+        for (i = 0; i < amountOfPieces; i++) {
+            all = legalMovesOfPieces(board, pieceIndexes[i]);
+            if (i == 10) {
+                alert(all);
+            }
+            for (j = 0; j < 64; j++) {
+                if (all[j] == -1) {
+                    allAttackedSquares[j] = 1;
+                }
+            }
+        }
+        alert(allAttackedSquares);
+        return allAttackedSquares;
     }
     
     // We need this to reverse the board for black pieces as to give them the same logic as white pieces and reverse the board again.
