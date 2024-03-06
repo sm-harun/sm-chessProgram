@@ -1,5 +1,5 @@
 let startPosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-let testPosition = '8/8/8/8/4k3/7K/8/8 w KQkq - 0 1';
+let testPosition = '2rR2rR/8/8/8/8/8/8/k3K3 w KQkq - 0 1';
 let turn = true;
 
 let board = new Array(64).fill(0);
@@ -27,7 +27,22 @@ document.addEventListener("DOMContentLoaded", function() {
 });
     
     function showAttackedTiles(board) {
-    
+        
+        let attackedTiles = attackedSquares(board);
+        
+        for (let i = 0; i < 64; i++) {
+            
+            if(attackedTiles[i] == 1) {
+                
+                const moves = document.createElement('div'); 
+                moves.classList.add('moves-class'); 
+                moves.id = -i; 
+            
+                // We recall the chess tiles to append a child on them. 
+                chessTile = document.getElementById(i.toString());     
+                chessTile.appendChild(moves);
+            }
+        }
     }
     
     function rearrangeBoard(position) {

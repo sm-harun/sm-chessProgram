@@ -50,7 +50,6 @@
         }
     }
     
-    
     function legalPawnMoves(board, index, PieceIsBlack) {
         
         if (PieceIsBlack) {
@@ -381,7 +380,7 @@
             legalMoves[index + 7] = 0;
         }
         
-        for (i = 0; i < 64; i++) {
+        for (let i = 0; i < 64; i++) {
             if (attackedTiles[i] == 1) {
                 legalMoves[i] = 0;
             }
@@ -398,32 +397,20 @@
         
         let allAttackedSquares = new Array(64).fill(0);
         
-        let amountOfPieces = 0;
-        let pieceIndexes = new Array(16);
-        let index = 0;
-        
-        for (i = 0; i < 64; i++) {
-            if (board[i] < 0 && board[i] != -6) {
-                amountOfPieces++;
-                pieceIndexes[index] = i;
-                index++;
-            }
-        }
-        
-        let all;
-        
-        for (i = 0; i < amountOfPieces; i++) {
-            all = legalMovesOfPieces(board, pieceIndexes[i]);
-            if (i == 10) {
-                alert(all);
-            }
-            for (j = 0; j < 64; j++) {
-                if (all[j] == -1) {
-                    allAttackedSquares[j] = 1;
+        for (let i = 0; i < 64; i++) {
+            
+            if (board[i] < 0 && board[i] != -6) { 
+                
+                let currentMoves = legalMovesOfPieces(board, i);
+              
+                for (let j = 0; j < 64; j++) {
+                    if (currentMoves[j] === -1) {
+                        allAttackedSquares[j] = 1;
+                    }
                 }
             }
         }
-        alert(allAttackedSquares);
+        
         return allAttackedSquares;
     }
     
