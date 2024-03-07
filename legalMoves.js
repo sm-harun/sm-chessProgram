@@ -27,7 +27,7 @@
                 return legalQueenMoves(board, index, false);
                 break;
             case 6:
-                return legalKingMoves(board, index, false);
+                return legalKingMoves(board, index, false, false);
                 break;
             case -1:
                 return legalPawnMoves(board, index, true, false);
@@ -45,7 +45,7 @@
                 return legalQueenMoves(board, index, true);
                 break;
             case -6:
-                return legalKingMoves(board, index, true);
+                return legalKingMoves(board, index, true, false);
                 break;
         }
     }
@@ -337,7 +337,7 @@
         } else { return legalMoves; }
     }
     
-    function legalKingMoves(board, index, PieceIsBlack) {
+    function legalKingMoves(board, index, PieceIsBlack, onlyAttackedTiles) {
     
         // Check if the piece is black.
         if (PieceIsBlack) {
@@ -356,9 +356,6 @@
         }
         
         let legalMoves = new Array(64).fill(0);
-        
-        // This will be used later to filter out attacked squares.
-        let attackedTiles = attackedSquares(board);
         
         // Here it first assign's all 8 moves as legal.
         if (board[index - 8] <= 0) { legalMoves[index - 8] = 1; }
@@ -392,10 +389,17 @@
             legalMoves[index + 7] = 0;
         }
         
-        for (let i = 0; i < 64; i++) {
-            if (attackedTiles[i] == 1) {
-                legalMoves[i] = 0;
+        if (!onlyAttackedTiles) {
+            
+            // This will be used to filter out attacked squares.
+            let attackedTiles = attackedSquares(board);
+            
+            for (let i = 0; i < 64; i++) {
+                if (attackedTiles[i] == 1) {
+                    legalMoves[i] = 0;
+                }
             }
+            
         }
         
         if (PieceIsBlack) {
@@ -412,10 +416,12 @@
         
         for (let i = 0; i < 64; i++) {
             
-            if (board[i] < 0 && board[i] != -6) { 
+            if (board[i] < 0) { 
                 
                 if (board[i] == -1) {
                     currentMoves = legalPawnMoves(board, i, true, true);
+                } else if (board[i] == -6) {
+                    currentMoves = legalKingMoves(board, i, true, true);
                 } else {
                     currentMoves = legalMovesOfPieces(board, i);
                 }
