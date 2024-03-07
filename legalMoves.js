@@ -12,7 +12,7 @@
     
         switch(board[index]) {
             case 1:
-                return legalPawnMoves(board, index, false);
+                return legalPawnMoves(board, index, false, false);
                 break;
             case 2:
                 return legalKnightMoves(board, index, false);
@@ -30,7 +30,7 @@
                 return legalKingMoves(board, index, false);
                 break;
             case -1:
-                return legalPawnMoves(board, index, true);
+                return legalPawnMoves(board, index, true, false);
                 break;
             case -2:
                 return legalKnightMoves(board, index, true);
@@ -50,7 +50,8 @@
         }
     }
     
-    function legalPawnMoves(board, index, PieceIsBlack) {
+    // I added the forth parameter cause we need for the attackedSquares function.
+    function legalPawnMoves(board, index, PieceIsBlack, onlyAttackedTiles) {
         
         if (PieceIsBlack) {
             let returnOfFunction = reverseBoard(board, index);
@@ -68,21 +69,32 @@
         
         let legalPawnMove = new Array(64).fill(0);
         
-        // Always moves 1 square up.
-        if (board[index-8] == 0) {
-            legalPawnMove[index-8] = 1;
-        }
-        // Moves 2 squares up for the first move.
-        if (board[index-8] == 0 && board[index-16] == 0 && index > 47) {
-            legalPawnMove[index-16] = 1;
-        }
-        
-        // Captures side ways for the pawn.
-        if (board[index-9] < 0 && !leftBorderIndexes.includes(index)) {
-            legalPawnMove[index-9] = 1;
-        }
-        if (board[index-7] < 0 && !rightBorderIndexes.includes(index)) {
-            legalPawnMove[index-7] = 1;
+        if (!onlyAttackedTiles) {
+            // Always moves 1 square up.
+            if (board[index-8] == 0) {
+                legalPawnMove[index-8] = 1;
+            }
+            // Moves 2 squares up for the first move.
+            if (board[index-8] == 0 && board[index-16] == 0 && index > 47) {
+                legalPawnMove[index-16] = 1;
+            }
+            
+            // Captures side ways for the pawn.
+            if (board[index-9] < 0 && !leftBorderIndexes.includes(index)) {
+                legalPawnMove[index-9] = 1;
+            }
+            if (board[index-7] < 0 && !rightBorderIndexes.includes(index)) {
+                legalPawnMove[index-7] = 1;
+            }
+        } else {
+            
+            // These will always be legal because they attack the square.
+            if (!leftBorderIndexes.includes(index)) {
+                legalPawnMove[index-9] = 1;
+            }
+            if (!rightBorderIndexes.includes(index)) {
+                legalPawnMove[index-7] = 1;
+            }
         }
         
         if (PieceIsBlack) {
@@ -396,15 +408,20 @@
     function attackedSquares(board) {
         
         let allAttackedSquares = new Array(64).fill(0);
+        let currentMoves;
         
         for (let i = 0; i < 64; i++) {
             
             if (board[i] < 0 && board[i] != -6) { 
                 
-                let currentMoves = legalMovesOfPieces(board, i);
-              
+                if (board[i] == -1) {
+                    currentMoves = legalPawnMoves(board, i, true, true);
+                } else {
+                    currentMoves = legalMovesOfPieces(board, i);
+                }
+                
                 for (let j = 0; j < 64; j++) {
-                    if (currentMoves[j] === -1) {
+                    if (currentMoves[j] == -1) {
                         allAttackedSquares[j] = 1;
                     }
                 }
