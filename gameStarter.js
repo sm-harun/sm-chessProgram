@@ -44,7 +44,55 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         }
     }
-    
+
+    function changeTheme() {
+
+        let promotionChoice = document.getElementById("promotionChoice");
+        promotionChoice.style.visibility = "visible";
+        
+        let fuzzyBrown = document.createElement("button");
+    	fuzzyBrown.classList.add('choiceButtons');
+        promotionChoice.appendChild(fuzzyBrown);
+        fuzzyBrown.textContent = "Fuzzy Brown";
+        fuzzyBrown.style.backgroundColor = "#774914";
+        
+        let darkRed = document.createElement("button");
+    	darkRed.classList.add('choiceButtons');
+        promotionChoice.appendChild(darkRed);
+        darkRed.textContent = "Dark Red";
+        darkRed.style.backgroundColor = "#660000";
+        
+        let background = document.getElementById("background");
+        let firstClassTiles = document.getElementsByClassName("firstClassTiles");
+        let secondClassTiles = document.getElementsByClassName("secondClassTiles");
+
+        darkRed.addEventListener('click', function () {
+            
+            for (let i = 0; i < 32; i++) {
+                firstClassTiles[i].style.backgroundColor = "#660000";
+                secondClassTiles[i].style.backgroundColor = "red";
+            }
+            background.style.backgroundColor = "black";
+            
+            darkRed.remove();
+            fuzzyBrown.remove();
+            promotionChoice.style.visibility = "hidden";
+        });
+        
+        fuzzyBrown.addEventListener('click', function () {
+            
+            for (let i = 0; i < 32; i++) {
+                firstClassTiles[i].style.backgroundColor = "#c18720";
+                secondClassTiles[i].style.backgroundColor = "#e2d997";
+            }
+            background.style.backgroundColor = "#774914";
+
+            darkRed.remove();
+            fuzzyBrown.remove();
+            promotionChoice.style.visibility = "hidden";
+        });
+    }
+
     function rearrangeBoard(position) {
             
         let tile;
@@ -61,7 +109,10 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     
     function createChessBoard() {
-    
+        
+        const gameBackground = document.getElementById("background");
+        gameBackground.style.backgroundColor = "#774914";
+
         // Get the chess board container 
         const chessBoard = document.getElementById('chessBoard'); 
 
@@ -79,15 +130,14 @@ document.addEventListener("DOMContentLoaded", function() {
                 
                 // Creates a new chess tile 
                 const chessTile = document.createElement('div');
-                chessTile.classList.add('chess-tile');
                 chessTile.id = index;
                 //chessTile.textContent = index;
                 index++;
                 
                 if (k % 2 == 1) {
-                    chessTile.style.backgroundColor = "#c18720";
+                    chessTile.classList.add("firstClassTiles");
                 } else {
-                    chessTile.style.backgroundColor = "#e2d997";
+                    chessTile.classList.add("secondClassTiles");
                 }
                 
                 // Append the tile to the chess board 

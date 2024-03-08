@@ -1,4 +1,4 @@
-	 let borderIndexes = [0, 1, 2, 3, 4, 5, 6, 7, 
+	let borderIndexes = [0, 1, 2, 3, 4, 5, 6, 7, 
                          8, 15, 16, 23, 24, 31, 32, 39, 40, 
                          47, 48, 55, 56, 57, 58, 59, 60,
                          61, 62, 63];
@@ -361,11 +361,11 @@
         if (board[index - 8] <= 0) { legalMoves[index - 8] = 1; }
         if (board[index - 9] <= 0) { legalMoves[index - 9] = 1; }
         if (board[index - 7] <= 0) { legalMoves[index - 7] = 1; }
-        if (board[index + 8] <= 0) { legalMoves[index + 8] = 1 }
-        if (board[index + 9] <= 0) { legalMoves[index + 9] = 1 }
-        if (board[index + 7] <= 0) { legalMoves[index + 7] = 1 }
-        if (board[index + 1] <= 0) { legalMoves[index + 1] = 1 }
-        if (board[index - 1] <= 0) { legalMoves[index - 1] = 1 }
+        if (board[index + 8] <= 0) { legalMoves[index + 8] = 1; }
+        if (board[index + 9] <= 0) { legalMoves[index + 9] = 1; }
+        if (board[index + 7] <= 0) { legalMoves[index + 7] = 1; }
+        if (board[index + 1] <= 0) { legalMoves[index + 1] = 1; }
+        if (board[index - 1] <= 0) { legalMoves[index - 1] = 1; }
         
         // Here it filters out moves that go over the border.
         if(upBorderIndexes.includes(index)) {

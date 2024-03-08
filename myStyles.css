@@ -1,5 +1,5 @@
 body {
-    background-color: #774914;
+    background-color: black;
     display: flex; 
     justify-content: center; 
     align-items: center; 
@@ -14,16 +14,25 @@ body {
 
 .chess-board { 
     display: grid; 
+    grid-auto-flow: row;
     grid-template-columns: repeat(8, 50px); 
     grid-template-rows: repeat(8, 50px);
     border: 15px solid #4e300d; 
-    } 
+} 
 
-.chess-tile { 
+.firstClassTiles {
+    background-color: #c18720;
     position: relative;
     width: 50px; 
     height: 50px;
-} 
+}
+
+.secondClassTiles {
+    background-color: #e2d997;
+    position: relative;
+    width: 50px; 
+    height: 50px;
+}
 
 .chess-piece { 
     position: absolute;
@@ -62,6 +71,11 @@ body {
 
 #testPositionBoard {
     top: 50%;
+    left: 80%;
+    height: 10%;
+}
+#changeTheme {
+    top: 80%;
     left: 80%;
     height: 10%;
 }
