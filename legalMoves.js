@@ -7,45 +7,46 @@
     let downBorderIndexes = [56, 57, 58, 59, 60, 61, 62, 63];
     let rightBorderIndexes = [7, 15, 23, 31, 39, 47, 55, 63];
     let leftBorderIndexes = [0, 8, 16, 24, 32, 40, 48, 56];
-        
-    function legalMovesOfPieces(board, index) {
+    
+    // The last argument is needed to check for the squares the king won't be able to go to.   
+    function legalMovesOfPieces(board, index, onlyAttackedTiles) {
     
         switch(board[index]) {
             case 1:
-                return legalPawnMoves(board, index, false, false);
+                return legalPawnMoves(board, index, false, onlyAttackedTiles);
                 break;
             case 2:
-                return legalKnightMoves(board, index, false);
+                return legalKnightMoves(board, index, false, onlyAttackedTiles);
                 break;
             case 3:
-                return legalBishopMoves(board, index, false);
+                return legalBishopMoves(board, index, false, onlyAttackedTiles);
                 break;
             case 4:
-                return legalRookMoves(board, index, false);
+                return legalRookMoves(board, index, false, onlyAttackedTiles);
                 break;
             case 5:
-                return legalQueenMoves(board, index, false);
+                return legalQueenMoves(board, index, false, onlyAttackedTiles);
                 break;
             case 6:
-                return legalKingMoves(board, index, false, false);
+                return legalKingMoves(board, index, false, onlyAttackedTiles);
                 break;
             case -1:
-                return legalPawnMoves(board, index, true, false);
+                return legalPawnMoves(board, index, true, onlyAttackedTiles);
                 break;
             case -2:
-                return legalKnightMoves(board, index, true);
+                return legalKnightMoves(board, index, true, onlyAttackedTiles);
                 break;
             case -3:
-                return legalBishopMoves(board, index, true);
+                return legalBishopMoves(board, index, true, onlyAttackedTiles);
                 break;
             case -4:
-                return legalRookMoves(board, index, true);
+                return legalRookMoves(board, index, true, onlyAttackedTiles);
                 break;
             case -5:
-                return legalQueenMoves(board, index, true);
+                return legalQueenMoves(board, index, true, onlyAttackedTiles);
                 break;
             case -6:
-                return legalKingMoves(board, index, true, false);
+                return legalKingMoves(board, index, true, onlyAttackedTiles);
                 break;
         }
     }
@@ -105,7 +106,7 @@
         }
     }
     
-    function legalKnightMoves(board, index, PieceIsBlack) {
+    function legalKnightMoves(board, index, PieceIsBlack, onlyAttackedTiles) {
 
         // For some reason the reverseBoard function fixes an issue where pieces can't move backwards.
         // So I just did it twice for the white pieces and it works. I will try fixing the core problem later. 
@@ -132,39 +133,30 @@
         let fileOfIndex = index % 8;
 
         // Checks for legal moves from the 8 possible tiles.
-        if (rankOfIndex > 1 && fileOfIndex > 0 && board[index - 17] <= 0) {
-            legalMoves[index - 17] = 1;
+        if (rankOfIndex > 1 && fileOfIndex > 0) { legalMoves[index - 17] = 1; }
+        if (rankOfIndex > 1 && fileOfIndex < 7) { legalMoves[index - 15] = 1; }
+        if (rankOfIndex > 0 && fileOfIndex > 1) { legalMoves[index - 10] = 1; }
+        if (rankOfIndex > 0 && fileOfIndex < 6) { legalMoves[index - 6] = 1; }
+        if (rankOfIndex < 7 && fileOfIndex > 1) { legalMoves[index + 6] = 1; }
+        if (rankOfIndex < 7 && fileOfIndex < 6) { legalMoves[index + 10] = 1; }
+        if (rankOfIndex < 6 && fileOfIndex > 0) { legalMoves[index + 15] = 1; }
+        if (rankOfIndex < 6 && fileOfIndex < 7) { legalMoves[index + 17] = 1; }
+        
+        // Filters out move that attack its own pieces.
+        // But they won't be filtered if the king is trying to attack it.
+        for (i = 0; i < 64; i++) {
+            if (board[i] > 0 && !onlyAttackedTiles) {
+                legalMoves[i] = 0;
+            }
         }
-        if (rankOfIndex > 1 && fileOfIndex < 7 && board[index - 15] <= 0) {
-            legalMoves[index - 15] = 1;
-        }
-        if (rankOfIndex > 0 && fileOfIndex > 1 && board[index - 10] <= 0) {
-            legalMoves[index - 10] = 1;
-        }
-        if (rankOfIndex > 0 && fileOfIndex < 6 && board[index - 6] <= 0) {
-            legalMoves[index - 6] = 1;
-        }
-        if (rankOfIndex < 7 && fileOfIndex > 1 && board[index + 6] <= 0) {
-            legalMoves[index + 6] = 1;
-        }
-        if (rankOfIndex < 7 && fileOfIndex < 6 && board[index + 10] <= 0) {
-            legalMoves[index + 10] = 1;
-        }
-        if (rankOfIndex < 6 && fileOfIndex > 0 && board[index + 15] <= 0) {
-            legalMoves[index + 15] = 1;
-        }
-        if (rankOfIndex < 6 && fileOfIndex < 7 && board[index + 17] <= 0) {
-            legalMoves[index + 17] = 1;
-        }
-
-
+        
         if (PieceIsBlack) {
             returnOfFunction = reverseBoard(legalMoves, index);
             return returnOfFunction[0];
         } else { return legalMoves; }
     }
  
-    function legalBishopMoves(board, index, PieceIsBlack) {
+    function legalBishopMoves(board, index, PieceIsBlack, onlyAttackedTiles) {
         
         if (PieceIsBlack) {
             let returnOfFunction = reverseBoard(board, index);
@@ -218,14 +210,23 @@
                 }
                 
                 // Stop if we found a friendly piece.
-                if (board[diagonalIndex] > 0) { break; }                                
+                if (board[diagonalIndex] > 0) { 
+                    if (onlyAttackedTiles) {
+                        legalMoves[diagonalIndex] = 1;
+                    }
+                    break;
+                }                                
                 
                 legalMoves[diagonalIndex] = 1;
                 
                 // Stop after we target an enemy piece or hit the border.
                 if (borderIndexes.includes(diagonalIndex)) { break; }
+                if (board[diagonalIndex] == -6 && onlyAttackedTiles) {
+                    i++;
+                    continue;
+                }
                 if (board[diagonalIndex] < 0) { break; }
-                                
+                
                 i++;
             }
         }
@@ -236,7 +237,7 @@
         } else { return legalMoves; }
     }
     
-    function legalRookMoves(board, index, PieceIsBlack) {
+    function legalRookMoves(board, index, PieceIsBlack, onlyAttackedTiles) {
     
         if (PieceIsBlack) {
             let returnOfFunction = reverseBoard(board, index);
@@ -262,37 +263,57 @@
         
         // Each loop decides legal moves for every direction.
         for (i = 1; i <= distanceUp; i++) {
-            if (board[index - 8*i] > 0) { break; }
+            if (board[index - 8*i] > 0) { 
+                if (onlyAttackedTiles) { legalMoves[index - 8*i] = 1; }
+                break; 
+            }
             if (board[index - 8*i] < 0) {
                 legalMoves[index - 8*i] = 1;
-                break;                    
+                if (onlyAttackedTiles && board[index - 8*i] == -6) {
+                    continue;
+                } else { break; }
             }
             legalMoves[index - 8*i] = 1;
         }
         
         for (i = 1; i <= distanceDown; i++) {
-            if (board[index + 8*i] > 0) { break; }
+            if (board[index + 8*i] > 0) { 
+                if (onlyAttackedTiles) { legalMoves[index + 8*i] = 1; }
+                break;
+            }
             if (board[index + 8*i] < 0) {
                 legalMoves[index + 8*i] = 1;
-                break;                    
+                if (onlyAttackedTiles && board[index + 8*i] == -6) {
+                    continue;
+                } else { break; }                    
             }
             legalMoves[index + 8*i] = 1;
         }
         
         for (i = 1; i <= distanceLeft; i++) {
-            if (board[index - 1*i] > 0) { break; }
+            if (board[index - 1*i] > 0) {
+                if (onlyAttackedTiles) { legalMoves[index - 1*i] = 1; }
+                break;
+            }
             if (board[index - 1*i] < 0) {
                 legalMoves[index - 1*i] = 1;
-                break;                    
+                if (onlyAttackedTiles && board[index - 1*i] == -6) {
+                    continue;
+                } else { break; }                    
             }
             legalMoves[index - 1*i] = 1;
         }
         
         for (i = 1; i <= distanceRight; i++) {
-            if (board[index + 1*i] > 0) { break; }
+            if (board[index + 1*i] > 0) {
+                if (onlyAttackedTiles) { legalMoves[index + 1*i] = 1; }
+                break;
+            }
             if (board[index + 1*i] < 0) {
                 legalMoves[index + 1*i] = 1;
-                break;                    
+                if (onlyAttackedTiles && board[index + 1*i] == -6) {
+                    continue;
+                } else { break; }                    
             }
             legalMoves[index + 1*i] = 1;
         }
@@ -304,7 +325,7 @@
     }    
     
     // Combines the moves of the rook and bishop.
-    function legalQueenMoves(board, index, PieceIsBlack) {
+    function legalQueenMoves(board, index, PieceIsBlack, onlyAttackedTiles) {
         
         if (PieceIsBlack) {
             let returnOfFunction = reverseBoard(board, index);
@@ -322,8 +343,8 @@
         
         let legalMoves = new Array(64).fill(0);
         
-        let legalRMoves = legalRookMoves(board, index, false);
-        let legalBMoves = legalBishopMoves(board, index, false);
+        let legalRMoves = legalRookMoves(board, index, false, onlyAttackedTiles);
+        let legalBMoves = legalBishopMoves(board, index, false, onlyAttackedTiles);
         
         for (i = 0; i < 64; i++) {
             if(legalRMoves[i] == 1 || legalBMoves[i] == 1) {
@@ -418,13 +439,7 @@
             
             if (board[i] < 0) { 
                 
-                if (board[i] == -1) {
-                    currentMoves = legalPawnMoves(board, i, true, true);
-                } else if (board[i] == -6) {
-                    currentMoves = legalKingMoves(board, i, true, true);
-                } else {
-                    currentMoves = legalMovesOfPieces(board, i);
-                }
+                currentMoves = legalMovesOfPieces(board, i, true);
                 
                 for (let j = 0; j < 64; j++) {
                     if (currentMoves[j] == -1) {

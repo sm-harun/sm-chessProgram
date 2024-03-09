@@ -272,7 +272,7 @@ document.addEventListener("DOMContentLoaded", function() {
         let chessTile;
         
         // This will return an array with all the legal moves set to one.      
-        let legalMoves = legalMovesOfPieces(board, chessPiece.parentNode.id); 
+        let legalMoves = legalMovesOfPieces(board, chessPiece.parentNode.id, false);
         let clickedPiece = board[chessPiece.parentNode.id]; 
         
         let isItAPawn = board[chessPiece.parentNode.id] == 1 || board[chessPiece.parentNode.id] == -1;
