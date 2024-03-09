@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function() {
     
     function showAttackedTiles(board) {
         
-        let attackedTiles = attackedSquares(board);
+        let attackedTiles = attackedSquares(board, false, "board");
         
         for (let i = 0; i < 64; i++) {
             
@@ -281,8 +281,8 @@ document.addEventListener("DOMContentLoaded", function() {
         for(i=0; i<64; i++) { 
             
             // Filters out moves with the wrong turn.
-            //if (turn == true && pieceIsBlack == true) { continue; }
-            //if (turn == false && pieceIsBlack == false) { continue; }
+            if (turn == true && pieceIsBlack == true) { continue; }
+            if (turn == false && pieceIsBlack == false) { continue; }
                 
             // Filters out illegal moves. 
             if (legalMoves[i] == 0) { continue; } 
@@ -316,7 +316,7 @@ document.addEventListener("DOMContentLoaded", function() {
         // Update the board array of the current position. 
         board[chessPiece.parentNode.id] = 0; 
         board[-moves.id] = clickedPiece; 
-                                    
+        
         // Here it removes pieces from a tile first and then puts the new one. 
         const movedTile = document.getElementById(-moves.id); 
         movedTile.removeChild(movedTile.firstChild); 
@@ -330,6 +330,35 @@ document.addEventListener("DOMContentLoaded", function() {
          // Switches the turns for a different colour.
          if (turn == true) { turn = false } 
          else if (turn == false) { turn = true }
+         
+         toggleCheckState(false);
+         
+         // All these below are needed to detect a check.
+         let kingsIndex;
+         let rightBoard;
+         
+         if (turn == true) {
+            rightBoard = board;
+             
+            for (let i = 0; i < 64; i++) {
+                 if (board[i] == 6) { kingsIndex = i; break;}
+             }
+         } else if (turn == false) {
+            
+            for (let i = 0; i < 64; i++) {
+                 if (board[i] == -6) { kingsIndex = i; break;}
+            }
+            
+            let reversedBoard = reverseBoard(board, kingsIndex);
+            rightBoard = reversedBoard[0];
+            kingsIndex = reversedBoard[1]
+         }
+         
+         let attackedIndexes = attackedSquares(rightBoard, false, "Indexes");
+         
+         if (attackedIndexes.includes(kingsIndex)) {
+            toggleCheckState(true);
+         }
     }
     
     function promotion(chessPiece, pieceColor, moves, board) {
@@ -446,8 +475,8 @@ document.addEventListener("DOMContentLoaded", function() {
         let knightChoice = document.getElementById("knightChoice");
         
         promotionChoice.style.visibility = "hidden";
-    	  queenChoice.remove();
-    	  rookChoice.remove();
-    	  bishopChoice.remove();
-    	  knightChoice.remove();
+    	queenChoice.remove();
+    	rookChoice.remove();
+    	bishopChoice.remove();
+    	knightChoice.remove();
     }

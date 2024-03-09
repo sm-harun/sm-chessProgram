@@ -8,48 +8,68 @@
     let rightBorderIndexes = [7, 15, 23, 31, 39, 47, 55, 63];
     let leftBorderIndexes = [0, 8, 16, 24, 32, 40, 48, 56];
     
-    // The last argument is needed to check for the squares the king won't be able to go to.   
-    function legalMovesOfPieces(board, index, onlyAttackedTiles) {
+    let inCheck = false;
     
-        switch(board[index]) {
-            case 1:
-                return legalPawnMoves(board, index, false, onlyAttackedTiles);
-                break;
-            case 2:
-                return legalKnightMoves(board, index, false, onlyAttackedTiles);
-                break;
-            case 3:
-                return legalBishopMoves(board, index, false, onlyAttackedTiles);
-                break;
-            case 4:
-                return legalRookMoves(board, index, false, onlyAttackedTiles);
-                break;
-            case 5:
-                return legalQueenMoves(board, index, false, onlyAttackedTiles);
-                break;
-            case 6:
-                return legalKingMoves(board, index, false, onlyAttackedTiles);
-                break;
-            case -1:
-                return legalPawnMoves(board, index, true, onlyAttackedTiles);
-                break;
-            case -2:
-                return legalKnightMoves(board, index, true, onlyAttackedTiles);
-                break;
-            case -3:
-                return legalBishopMoves(board, index, true, onlyAttackedTiles);
-                break;
-            case -4:
-                return legalRookMoves(board, index, true, onlyAttackedTiles);
-                break;
-            case -5:
-                return legalQueenMoves(board, index, true, onlyAttackedTiles);
-                break;
-            case -6:
-                return legalKingMoves(board, index, true, onlyAttackedTiles);
-                break;
+    function toggleCheckState(state) {
+        if (state == true) {
+            inCheck = true;
+        } else if (state == false) {
+            inCheck = false;
         }
     }
+    
+    // The last argument is needed to check for the squares the king won't be able to go to.   
+    function legalMovesOfPieces(board, index, onlyAttackedTiles) {
+        
+        let movesArray = [];
+
+        switch (board[index]) {
+            case 1:
+              movesArray = legalPawnMoves(board, index, false, onlyAttackedTiles);
+              break;
+            case 2:
+              movesArray = legalKnightMoves(board, index, false, onlyAttackedTiles);
+              break;
+            case 3:
+              movesArray = legalBishopMoves(board, index, false, onlyAttackedTiles);
+              break;
+            case 4:
+              movesArray = legalRookMoves(board, index, false, onlyAttackedTiles);
+              break;
+            case 5:
+              movesArray = legalQueenMoves(board, index, false, onlyAttackedTiles);
+              break;
+            case 6:
+              movesArray = legalKingMoves(board, index, false, onlyAttackedTiles);
+              break;
+            case -1:
+              movesArray = legalPawnMoves(board, index, true, onlyAttackedTiles);
+              break;
+            case -2:
+              movesArray = legalKnightMoves(board, index, true, onlyAttackedTiles);
+              break;
+            case -3:
+              movesArray = legalBishopMoves(board, index, true, onlyAttackedTiles);
+              break;
+            case -4:
+              movesArray = legalRookMoves(board, index, true, onlyAttackedTiles);
+              break;
+            case -5:
+              movesArray = legalQueenMoves(board, index, true, onlyAttackedTiles);
+              break;
+            case -6:
+              movesArray = legalKingMoves(board, index, true, onlyAttackedTiles);
+              break;
+        }
+        
+        if (inCheck && !onlyAttackedTiles) {
+            filteredMoves = checkFilter(movesArray, board, index);
+            return filteredMoves;
+        } else {
+           return movesArray; 
+        }
+    }
+
     
     // I added the forth parameter cause we need for the attackedSquares function.
     function legalPawnMoves(board, index, PieceIsBlack, onlyAttackedTiles) {
@@ -413,7 +433,7 @@
         if (!onlyAttackedTiles) {
             
             // This will be used to filter out attacked squares.
-            let attackedTiles = attackedSquares(board);
+            let attackedTiles = attackedSquares(board, false, "board");
             
             for (let i = 0; i < 64; i++) {
                 if (attackedTiles[i] == 1) {
@@ -430,28 +450,83 @@
     }
     
     
-    function attackedSquares(board) {
+    function attackedSquares(board, color, status) {
         
         let allAttackedSquares = new Array(64).fill(0);
+        let allIndexes = new Array(64);
         let currentMoves;
+        // This is needed to add values to the allIndexes array.
+        let k = 0;
         
         for (let i = 0; i < 64; i++) {
             
-            if (board[i] < 0) { 
+            if (color == false && board[i] < 0) { 
                 
                 currentMoves = legalMovesOfPieces(board, i, true);
                 
                 for (let j = 0; j < 64; j++) {
                     if (currentMoves[j] == -1) {
                         allAttackedSquares[j] = 1;
+                        allIndexes[k] = j;
+                        k++;
+                    }
+                }
+            }
+            if (color == true && board[i] > 0) { 
+                
+                currentMoves = legalMovesOfPieces(board, i, true);
+                
+                for (let j = 0; j < 64; j++) {
+                    if (currentMoves[j] == -1) {
+                        allAttackedSquares[j] = 1;
+                        allIndexes[k] = j;
+                        k++;
                     }
                 }
             }
         }
         
-        return allAttackedSquares;
+        if (status == "Indexes") {
+            return allIndexes;
+        } else { return allAttackedSquares; }
     }
     
+    function checkFilter(unfilteredMoves, board, index) {
+        
+        //console.log("Runs");
+        
+        let filteredMoves = [...unfilteredMoves];
+        //console.log(filteredMoves);
+        
+        let attackedT;
+        let kingsIndex;
+        
+        let kingValue = board[index] > 0 ? 6 : -6;
+        
+        for (let move = 0; move < 64; move++) {
+            
+            if(unfilteredMoves[move] == -1) {
+                
+                let updatedBoard = [...board];
+                updatedBoard[index] = 0;
+                updatedBoard[move] = board[index];
+                
+                attackedIndexes = attackedSquares(updatedBoard, !(board[index] > 0), "Indexes");
+                console.log(attackedIndexes);
+                
+                for (let i = 0; i < 64; i++) {
+                    if (updatedBoard[i] == kingValue) { kingsIndex = i; break;}
+                }
+                
+                if (attackedIndexes.includes(kingsIndex)) {
+                    filteredMoves[move] = 0;
+                }
+            }
+        }
+        
+        return filteredMoves;
+    }
+     
     // We need this to reverse the board for black pieces as to give them the same logic as white pieces and reverse the board again.
     // It also inverses the pieces so white pieces become black and vise versa.
     function reverseBoard(board, index) {
