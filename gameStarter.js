@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function() {
     
     function showAttackedTiles(board) {
         
-        let attackedTiles = attackedSquares(board, false, "board");
+        let attackedTiles = attackedSquares(board, true, "board");
         
         for (let i = 0; i < 64; i++) {
             

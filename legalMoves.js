@@ -477,7 +477,7 @@
                 currentMoves = legalMovesOfPieces(board, i, true);
                 
                 for (let j = 0; j < 64; j++) {
-                    if (currentMoves[j] == -1) {
+                    if (currentMoves[j] == 1) {
                         allAttackedSquares[j] = 1;
                         allIndexes[k] = j;
                         k++;
@@ -510,9 +510,9 @@
                 let updatedBoard = [...board];
                 updatedBoard[index] = 0;
                 updatedBoard[move] = board[index];
-                
+                console.log(updatedBoard);
                 attackedIndexes = attackedSquares(updatedBoard, !(board[index] > 0), "Indexes");
-                console.log(attackedIndexes);
+                
                 
                 for (let i = 0; i < 64; i++) {
                     if (updatedBoard[i] == kingValue) { kingsIndex = i; break;}
