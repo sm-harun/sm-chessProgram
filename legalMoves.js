@@ -9,14 +9,8 @@
     let leftBorderIndexes = [0, 8, 16, 24, 32, 40, 48, 56];
     
     let inCheck = false;
-    
-    function toggleCheckState(state) {
-        if (state == true) {
-            inCheck = true;
-        } else if (state == false) {
-            inCheck = false;
-        }
-    }
+    let castleRight = [true, true];
+    let castleLeft = [true, true];
     
     // The last argument is needed to check for the squares the king won't be able to go to.   
     function legalMovesOfPieces(board, index, onlyAttackedTiles) {
@@ -62,11 +56,11 @@
               break;
         }
         
-        if (inCheck && !onlyAttackedTiles) {
+        if (!onlyAttackedTiles) {
             filteredMoves = checkFilter(movesArray, board, index);
             return filteredMoves;
         } else {
-           return movesArray; 
+            return movesArray;
         }
     }
 
@@ -397,6 +391,15 @@
         }
         
         let legalMoves = new Array(64).fill(0);
+        let colorIndex;
+        
+        // This decides which color we are checking the castling rights for.
+        if (PieceIsBlack) { colorIndex = 1 }
+        else { colorIndex = 0 }
+        
+        // This are used to check if we can castle on a side.
+        let rightSideSpace = board[61] == 0 && board[62] == 0;
+        let leftSideSpace = board[57] == 0 && board[58] == 0 && board[59] == 0;
         
         // Here it first assign's all 8 moves as legal.
         if (board[index - 8] <= 0) { legalMoves[index - 8] = 1; }
@@ -407,6 +410,10 @@
         if (board[index + 7] <= 0) { legalMoves[index + 7] = 1; }
         if (board[index + 1] <= 0) { legalMoves[index + 1] = 1; }
         if (board[index - 1] <= 0) { legalMoves[index - 1] = 1; }
+        
+        // If we still have the rights, Castling will be legal.
+        if (rightSideSpace && castleRight[colorIndex]) { legalMoves[62] = 1; }
+        if (leftSideSpace && castleLeft[colorIndex]) { legalMoves[58] = 1; }
         
         // Here it filters out moves that go over the border.
         if(upBorderIndexes.includes(index)) {
@@ -436,11 +443,8 @@
             let attackedTiles = attackedSquares(board, false, "board");
             
             for (let i = 0; i < 64; i++) {
-                if (attackedTiles[i] == 1) {
-                    legalMoves[i] = 0;
-                }
+                if (attackedTiles[i] == 1) { legalMoves[i] = 0; }
             }
-            
         }
         
         if (PieceIsBlack) {
@@ -493,29 +497,26 @@
     
     function checkFilter(unfilteredMoves, board, index) {
         
-        //console.log("Runs");
+        console.log(board);
         
         let filteredMoves = [...unfilteredMoves];
         //console.log(filteredMoves);
         
-        let attackedT;
         let kingsIndex;
-        
-        let kingValue = board[index] > 0 ? 6 : -6;
+        let kingsValue = board[index] > 0 ? 6: -6;
         
         for (let move = 0; move < 64; move++) {
             
-            if(unfilteredMoves[move] == -1) {
+            if(Math.abs(unfilteredMoves[move]) == 1) {
                 
                 let updatedBoard = [...board];
                 updatedBoard[index] = 0;
                 updatedBoard[move] = board[index];
-                console.log(updatedBoard);
+                
                 attackedIndexes = attackedSquares(updatedBoard, !(board[index] > 0), "Indexes");
                 
-                
-                for (let i = 0; i < 64; i++) {
-                    if (updatedBoard[i] == kingValue) { kingsIndex = i; break;}
+                for (let m = 0; m < 64; m++) {
+                    if (updatedBoard[m] == kingsValue) { kingsIndex = m; break; }
                 }
                 
                 if (attackedIndexes.includes(kingsIndex)) {

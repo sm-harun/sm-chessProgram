@@ -275,9 +275,11 @@ document.addEventListener("DOMContentLoaded", function() {
         let legalMoves = legalMovesOfPieces(board, chessPiece.parentNode.id, false);
         let clickedPiece = board[chessPiece.parentNode.id]; 
         
-        let isItAPawn = board[chessPiece.parentNode.id] == 1 || board[chessPiece.parentNode.id] == -1;
+        let isAPawn = Math.abs(board[chessPiece.parentNode.id]) == 1;
         let pieceIsBlack = board[chessPiece.parentNode.id] < 0;
-                
+        
+        let isAKing = Math.abs(board[chessPiece.parentNode.id]) == 6;
+        
         for(i=0; i<64; i++) { 
             
             // Filters out moves with the wrong turn.
@@ -298,10 +300,17 @@ document.addEventListener("DOMContentLoaded", function() {
                            
             moves.addEventListener('click', function () { 
                 
+                if (isAKing) {
+                    if(pieceIsBlack && -moves.id == 2) { castle(0); }
+                    if(pieceIsBlack && -moves.id == 6) { castle(7); }
+                    if(!pieceIsBlack && -moves.id == 58) { castle(56); }
+                    if(!pieceIsBlack && -moves.id == 62) { castle(63); }
+                }
+                
                 // Here if it is a promoting pawn it will excute a function or else it uses the normal move function.
-                if (isItAPawn && (pieceIsBlack && -moves.id > 55)) {
+                if (isAPawn && (pieceIsBlack && -moves.id > 55)) {
                     promotion(chessPiece, "black", moves, board);
-                } else if (isItAPawn && (pieceIsBlack == false && -moves.id < 8)) {
+                } else if (isAPawn && (!pieceIsBlack && -moves.id < 8)) {
                     promotion(chessPiece, "white", moves, board);
                 } else {
                     movesEventListner(chessPiece, board, moves, clickedPiece);
@@ -331,7 +340,7 @@ document.addEventListener("DOMContentLoaded", function() {
          if (turn == true) { turn = false } 
          else if (turn == false) { turn = true }
          
-         toggleCheckState(false);
+        inCheck = false;
          
          // All these below are needed to detect a check.
          let kingsIndex;
@@ -342,7 +351,7 @@ document.addEventListener("DOMContentLoaded", function() {
              
             for (let i = 0; i < 64; i++) {
                  if (board[i] == 6) { kingsIndex = i; break;}
-             }
+            }
          } else if (turn == false) {
             
             for (let i = 0; i < 64; i++) {
@@ -357,8 +366,60 @@ document.addEventListener("DOMContentLoaded", function() {
          let attackedIndexes = attackedSquares(rightBoard, false, "Indexes");
          
          if (attackedIndexes.includes(kingsIndex)) {
-            toggleCheckState(true);
+            inCheck = true;
          }
+         
+         // Checks if we have the right to castle in every move.
+         castleRightsCheck(board);
+    }
+    
+    function castleRightsCheck(board) {
+        
+        if (board[60] == 0) {
+            castleRight[0] = false;
+            castleLeft[0] = false;
+        }
+        if (board[4] == 0) {
+            castleRight[1] = false;
+            castleLeft[1] = false;
+        }
+        
+        if (board[0] == 0) { castleLeft[1] = false; }
+        if (board[7] == 0) { castleRight[1] = false; }
+        if (board[56] == 0) { castleLeft[0] = false; }
+        if (board[63] == 0) { castleRight[0] = false; }
+    }
+    
+    function castle(index) {
+        
+        let movedTile;
+        
+        let rookTile = document.getElementById(index);
+        let movedRook = rookTile.firstChild;
+        rookTile.removeChild(movedRook);
+        
+        board[index] = 0;   
+        
+        if (index == 0) { 
+            movedTile = document.getElementById(3);
+            movedTile.appendChild(movedRook);
+            board[3] = -4;
+        }
+        if (index == 7) { 
+            movedTile = document.getElementById(5);
+            movedTile.appendChild(movedRook);
+            board[5] = -4;
+        }
+        if (index == 56) { 
+            movedTile = document.getElementById(59);
+            movedTile.appendChild(movedRook);
+            board[59] = 4;
+        }
+        if (index == 63) { 
+            movedTile = document.getElementById(61);
+            movedTile.appendChild(movedRook);
+            board[61] = 4; 
+        }
     }
     
     function promotion(chessPiece, pieceColor, moves, board) {
