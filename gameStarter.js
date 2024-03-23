@@ -5,19 +5,19 @@ let turn = true;
 let board = new Array(64).fill(0);
 
 // We use these varibles instead of rewriting all the paths.
-let whitePawn = 'Pawn_white.png';
-let whiteKnight = 'Knight_white.png';
-let whiteBishop = 'Bishop_white.png';
-let whiteRook = 'Rook_white.png';
-let whiteQueen = 'Queen_white.png';
-let whiteKing = 'King_white.png'
+let whitePawn = 'pieces/Pawn_white.png';
+let whiteKnight = 'pieces/Knight_white.png';
+let whiteBishop = 'pieces/Bishop_white.png';
+let whiteRook = 'pieces/Rook_white.png';
+let whiteQueen = 'pieces/Queen_white.png';
+let whiteKing = 'pieces/King_white.png'
 
-let blackPawn = 'Pawn_black.png';
-let blackKnight = 'Knight_black.png';
-let blackBishop = 'Bishop_black.png';
-let blackRook = 'Rook_black.png';
-let blackQueen = 'Queen_black.png';
-let blackKing = 'King_black.png';
+let blackPawn = 'pieces/Pawn_black.png';
+let blackKnight = 'pieces/Knight_black.png';
+let blackBishop = 'pieces/Bishop_black.png';
+let blackRook = 'pieces/Rook_black.png';
+let blackQueen = 'pieces/Queen_black.png';
+let blackKing = 'pieces/King_black.png';
 
 document.addEventListener("DOMContentLoaded", function() {
   
@@ -36,7 +36,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 
                 const moves = document.createElement('div'); 
                 moves.classList.add('moves-class'); 
-                moves.id = -i; 
             
                 // We recall the chess tiles to append a child on them. 
                 chessTile = document.getElementById(i.toString());     
@@ -277,8 +276,11 @@ document.addEventListener("DOMContentLoaded", function() {
         
         let isAPawn = Math.abs(board[chessPiece.parentNode.id]) == 1;
         let pieceIsBlack = board[chessPiece.parentNode.id] < 0;
+        let onStartSquare = pieceIsBlack ? chessPiece.parentNode.id < 16: chessPiece.parentNode.id > 47;
         
         let isAKing = Math.abs(board[chessPiece.parentNode.id]) == 6;
+        
+        unPassantBoard = new Array(64).fill(false);
         
         for(i=0; i<64; i++) { 
             
@@ -305,6 +307,15 @@ document.addEventListener("DOMContentLoaded", function() {
                     if(pieceIsBlack && -moves.id == 6) { castle(7); }
                     if(!pieceIsBlack && -moves.id == 58) { castle(56); }
                     if(!pieceIsBlack && -moves.id == 62) { castle(63); }
+                }
+                
+                if(isAPawn && onStartSquare) {
+                    if (-moves.id > 23 && -moves.id < 32 && pieceIsBlack) {
+                        //unPassantBoard[-moves.id] = true;
+                    }
+                    if (-moves.id > 31 && -moves.id < 40 && !pieceIsBlack) {
+                        //unPassantBoard[-moves.id] = true;
+                    }
                 }
                 
                 // Here if it is a promoting pawn it will excute a function or else it uses the normal move function.

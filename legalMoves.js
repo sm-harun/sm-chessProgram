@@ -12,6 +12,8 @@
     let castleRight = [true, true];
     let castleLeft = [true, true];
     
+    let unPassantBoard = new Array(64).fill(false);
+    
     // The last argument is needed to check for the squares the king won't be able to go to.   
     function legalMovesOfPieces(board, index, onlyAttackedTiles) {
         
@@ -68,10 +70,14 @@
     // I added the forth parameter cause we need for the attackedSquares function.
     function legalPawnMoves(board, index, PieceIsBlack, onlyAttackedTiles) {
         
+        let unPassantBoard2 = unPassantBoard;
+        
         if (PieceIsBlack) {
             let returnOfFunction = reverseBoard(board, index);
             board = returnOfFunction[0];
             index = returnOfFunction[1];
+            returnOfFunction = (reverseBoard(unPassantBoard, 0))[0];
+            unPassantBoard2 = returnOfFunction[0];
         } else {
             let returnOfFunction = reverseBoard(board, index);
             board = returnOfFunction[0];
@@ -101,6 +107,15 @@
             if (board[index-7] < 0 && !rightBorderIndexes.includes(index)) {
                 legalPawnMove[index-7] = 1;
             }
+            
+            // Un-passant.
+            if (unPassantBoard2[index + 1] == true) {
+                legalPawnMove[index-7] = 1;
+            }
+            if (unPassantBoard2[index - 1] == true) {
+                legalPawnMove[index-9] = 1;
+            }
+            
         } else {
             
             // These will always be legal because they attack the square.
@@ -497,10 +512,7 @@
     
     function checkFilter(unfilteredMoves, board, index) {
         
-        console.log(board);
-        
         let filteredMoves = [...unfilteredMoves];
-        //console.log(filteredMoves);
         
         let kingsIndex;
         let kingsValue = board[index] > 0 ? 6: -6;
