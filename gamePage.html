@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Chess</title>
+        <link rel="stylesheet" href="gamePageStyles.css">
+        <script src="legalMoves.js"></script>
+        <script src="gameStarter.js"></script>
+    </head>
+    <body id = "background">
+        <div id = "game-container">
+            <div class="chess-board-container">
+                <div class="chess-board" id = "chessBoard"></div>
+            </div>
+        </div>
+        <div id = "menu">
+            <p id = "optionText" > MENU </p>
+            <Button class = "positionButtons" id = "startPositionBoard" onClick = "rearrangeBoard(startPosition)">Start Position</Button>
+            <Button class = "positionButtons" id = "testPositionBoard" onClick = "rearrangeBoard(testPosition)">testPosition</Button>
+            <Button class = "positionButtons" id = "showAttackedTiles" onClick = "showAttackedTiles(board)">Show</Button>
+            <Button class = "positionButtons" id = "changeTheme" onClick = "changeTheme()">Change Theme</Button>
+        </div>
+        <div id = "promotionChoice"></div>
+    </body>
+</html>
