@@ -13,12 +13,14 @@
                 <div class="chess-board" id = "chessBoard"></div>
             </div>
         </div>
+        <script>
+            startGame();
+        </script>
         <div id = "menu">
             <p class = "optionText" > MENU: </p>
-            <Button class = "positionButtons" id = "startPositionBoard" onClick = "rearrangeBoard(startPosition)">New Game</Button>
-            <Button class = "positionButtons" id = "testPositionBoard" onClick = "rearrangeBoard(testPosition)">testPosition</Button>
-            <a href = "index.html"><Button class = "positionButtons" id = "showAttackedTiles">Exit</Button></a>
+            <Button class = "positionButtons" id = "startPositionBoard" onClick = "confirmNewGame()">New Game</Button>
             <Button class = "positionButtons" id = "changeTheme" onClick = "changeTheme()">Change Theme</Button>
+            <Button onClick = "exitConfirmation()" class = "positionButtons" id = "showAttackedTiles">Exit</Button>
         </div>
         <div id = "promotionChoice"></div>
     </body>

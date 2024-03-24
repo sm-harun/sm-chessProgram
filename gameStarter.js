@@ -19,13 +19,23 @@ let blackRook = 'pieces/Rook_black.png';
 let blackQueen = 'pieces/Queen_black.png';
 let blackKing = 'pieces/King_black.png';
 
-document.addEventListener("DOMContentLoaded", function() {
-  
-    createChessBoard();
-    deployPieces(startPosition);
+    function startGame() {
+        createChessBoard();
+        deployPieces(startPosition);
+    }
     
-});
+    function exitConfirmation() {
+        let result = confirm("Do you want to exit this game?");
+        if (result == true) { window.open("index.html"); }
+    }
     
+    function confirmNewGame() {
+        let result = confirm("Do you want to start new game? It will reset this one.");
+        if (result == true) {
+            rearrangeBoard(startPosition);
+        }
+    }
+     
     function showAttackedTiles(board) {
         
         let attackedTiles = attackedSquares(board, true, "board");
@@ -105,6 +115,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         
         deployPieces(position);
+        turn = true;
     }
     
     function createChessBoard() {
@@ -346,10 +357,17 @@ document.addEventListener("DOMContentLoaded", function() {
          const movesClass = document.getElementsByClassName('moves-class');
          const movesArray = Array.from(movesClass); 
          movesArray.forEach(element => element.remove()); 
-               
+         
+         let allImages = document.querySelectorAll('img');
+             
          // Switches the turns for a different colour.
-         if (turn == true) { turn = false } 
-         else if (turn == false) { turn = true }
+         if (turn == true) {
+             allImages.forEach(image => image.style.transform = "rotate(180deg)");
+             turn = false; 
+         } else if (turn == false) { 
+             allImages.forEach(image => image.style.transform = "rotate(0)")
+             turn = true;
+         }
          
         inCheck = false;
          
