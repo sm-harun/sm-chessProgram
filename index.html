@@ -3,9 +3,10 @@
     <head>
         <meta charset="UTF-8">
         <title>Chess</title>
-        <link rel="stylesheet" href="mainPageStyles.css">
-        <script src="legalMoves.js"></script>
-        <script src="gameStarter.js"></script>
+        <link rel="stylesheet" href="styles/mainPageStyles.css">
+        <script src="src/legalMoves.js"></script>
+        <script src="src/gameStarter.js"></script>
+        <script src="src/twoPlayers.js"></script>
     </head>
     <body id = "body">
         <div id = "welcome-page">
@@ -16,7 +17,7 @@
                 <img src = "pieces/King_white.png">
             </div>
             <div id = "start-menu">
-                <a href = "#"><button class = "menu-buttons">One Player (Not Supported)</button></a>
+                <button class = "menu-buttons" onClick = "showPopup('colorChoice')">One Player (Unfinished!)</button>
                 <a href = "twoPlayersPage.html"><button class = "menu-buttons">Two Players</button></a>
                 <a href = "#"><button class = "menu-buttons">Multiplyer (Not Supported)</button></a>
             </div>
@@ -32,6 +33,10 @@
             <p class = "descriptions">Follow: </p>
             <p class = "descriptions">My <a href = "https://github.com/sm-harun">GitHub</a></p>
             <p class = "descriptions">My <a href = "https://twitter.com/sm_harunX">Twitter</a></p>
+        </div>
+        <div id = "colorChoice">
+            <a href = "onePlayerPage.html" onClick = "playingColor=true"><button class = "choiceButtons">White</button></a>
+            <a href = "onePlayerPage.html" onclick = "playingColor=false"><button class = "choiceButtons">Black</button></a>
         </div>
     </body>
 </html>
