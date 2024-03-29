@@ -539,6 +539,23 @@
         
         return filteredMoves;
     }
+    
+    function checkCastleRights(board) {
+        
+        if (board[60] == 0) {
+            castleRight[0] = false;
+            castleLeft[0] = false;
+        }
+        if (board[4] == 0) {
+            castleRight[1] = false;
+            castleLeft[1] = false;
+        }
+        
+        if (board[0] == 0) { castleLeft[1] = false; }
+        if (board[7] == 0) { castleRight[1] = false; }
+        if (board[56] == 0) { castleLeft[0] = false; }
+        if (board[63] == 0) { castleRight[0] = false; }
+    }
      
     // We need this to reverse the board for black pieces as to give them the same logic as white pieces and reverse the board again.
     // It also inverses the pieces so white pieces become black and vise versa.
