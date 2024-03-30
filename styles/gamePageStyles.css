@@ -92,7 +92,7 @@ body {
     color: #00FFFF;
 }
 
-#promotionChoice {
+.choices {
     position: absolute;
     top:0;
     bottom: 0;
@@ -104,8 +104,11 @@ body {
     background-color: black;
     display: flex;
     flex-direction: column;
-    visibility: hidden;
     opacity: 0.8;
+}
+
+#promotionChoice {
+    visibility: hidden;
 }
 
 .choiceButtons {
