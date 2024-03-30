@@ -6,7 +6,7 @@
         <link rel="stylesheet" href="styles/gamePageStyles.css">
         <script src="src/legalMoves.js"></script>
         <script src="src/gameStarter.js"></script>
-         <script src="src/onePlayers.js"></script>
+         <script src="src/onePlayer.js"></script>
     </head>
     <body id = "background">
         <div id = "game-container">
@@ -23,6 +23,10 @@
             <Button class = "positionButtons" id = "changeTheme" onClick = "changeTheme()">Change Theme</Button>
             <Button onClick = "exitConfirmation()" class = "positionButtons" id = "showAttackedTiles">Exit</Button>
         </div>
-        <div id = "promotionChoice"></div>
+        <div id = "promotionChoice" class = "choices"></div>
+        <div id = "colorChoice" class = "choices">
+            <button class = "choiceButtons" onClick = "startOnePlayer(true)">White</button>
+            <button class = "choiceButtons" onClick = "startOnePlayer(false)">Black</button>
+        </div>
     </body>
 </html>

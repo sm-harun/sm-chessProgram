@@ -19,8 +19,9 @@ let blackRook = 'pieces/Rook_black.png';
 let blackQueen = 'pieces/Queen_black.png';
 let blackKing = 'pieces/King_black.png';
 
-var playingColor;
-    
+let playingColor = true;
+var color; 
+
     function fenStringConverter(fen) {
       
       // This array will hold the positions of the pieces with a piece representing a number.
@@ -184,7 +185,7 @@ var playingColor;
         }
     }
     
-    function chessPiecesEventListner(chessPiece, board, players) {
+    function chessPiecesEventListner(chessPiece, board) {
         
         // This removes all the move squares first if there are any. 
         const movesClass = document.getElementsByClassName('moves-class'); 
@@ -362,6 +363,7 @@ var playingColor;
         let result = confirm("Do you want to start new game? It will reset this one.");
         if (result == true) {
             deployPieces(startPosition);
+            turn = true;
         }
     }
     
