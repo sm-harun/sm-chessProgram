@@ -20,7 +20,7 @@ let blackQueen = 'pieces/Queen_black.png';
 let blackKing = 'pieces/King_black.png';
 
 let playingColor = true;
-var color; 
+let onePlayer = false;
 
     function fenStringConverter(fen) {
       
@@ -209,7 +209,7 @@ var color;
         for(i=0; i<64; i++) { 
             
             // Filters out moves of opposite color if its one player playing.
-            if (!pieceIsBlack != playingColor) { continue; }
+            if ((!pieceIsBlack != playingColor) && onePlayer) { continue; }
             
             // Filters out moves with the wrong turn.
             if (turn == true && pieceIsBlack == true) { continue; }
@@ -274,13 +274,19 @@ var color;
          movesArray.forEach(element => element.remove()); 
          
          let allImages = document.querySelectorAll('img');
-             
+         
+         if (!onePlayer) {
+             if (turn == true) {
+                 allImages.forEach(image => image.style.transform = "rotate(180deg)");
+             } else {
+                 allImages.forEach(image => image.style.transform = "rotate(0)");
+             }
+         }
+            
          // Switches the turns for a different colour.
          if (turn == true) {
-             allImages.forEach(image => image.style.transform = "rotate(180deg)");
              turn = false; 
-         } else if (turn == false) { 
-             allImages.forEach(image => image.style.transform = "rotate(0)")
+         } else if (turn == false) {
              turn = true;
          }
          
@@ -315,6 +321,10 @@ var color;
          
          // Checks if we have the right to castle in every move.
          checkCastleRights(board);
+         
+         if (onePlayer == true) {
+             makeRandomMove(board, !playingColor);
+         }
     }
     
     function castle(index) {
