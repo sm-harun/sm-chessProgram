@@ -12,33 +12,83 @@ function startOnePlayer(color) {
         playingColor = false;
         chessBoard.style.transform = "rotate(180deg)";
         allImages.forEach(image => image.style.transform = "rotate(180deg)");
+        makeRandomMove(board, !playingColor);
     }
+    
+    onePlayer = true;
+}
+
+function returnRandomMove(board, color) {
+    
+    let piecesIndex = [];
+    let k = 0;
+    
+    // Gets all the pieces of the selected color.
+    for (let i = 0; i < 64; i++) {
+        if((board[i] < 0 && !color) || (board[i] > 0 && color)) {
+            piecesIndex[k] = i;
+            k++;
+        }
+    }
+    
+    let hasMoves = false;
+    
+    let pieceToMove;
+    let legalMovesArray;
+    let indexesOfLegalMoves = [];
+    
+    while(true) {
+        
+        k = 0;
+        // Chooses a random piece and gets all it's legal moves.
+        pieceToMove = piecesIndex[Math.floor(Math.random()*piecesIndex.length)];
+        legalMovesArray = legalMovesOfPieces(board, pieceToMove, false);
+        
+        // Gets all the legal moves in one array.
+        for (let i = 0; i < 64; i++) {
+            if (Math.abs(legalMovesArray[i]) == 1) {
+                hasMoves = true;
+                indexesOfLegalMoves[k] = i;
+                k++;
+            }
+        }
+        
+        // If this piece does not have any legal moves it chooses another one.
+        if (hasMoves = true) {
+            hasMoves = false;
+            break;
+        }
+    }
+    
+    // selects a random move.
+    let move = indexesOfLegalMoves[Math.floor(Math.random()*indexesOfLegalMoves.length)];
+    
+    return [pieceToMove, move];
 }
 
 function makeRandomMove(board, color) {
     
-    let allPieces = [];
-    let pieceIndexes = [];
-    let k = 0;
+    let move = returnRandomMove(board, color);
+    let pieceValue = board[move[0]];
     
-    for (let i = 0; i < 63; i++) {
-        if (board[i] < 0 && color == false) {
-            allPieces[k] = board[i];
-            pieceIndexes[k] = i;
-            k++;
-        }
-        if (board[i] > 0 && color == true) {
-            allPieces[k] = board[i];
-            pieceIndexes[k] = i;
-            k++;
-        }
+    // currently for some reason this returns undefined. so for the time being we will just keep the piece in it's original place.
+    if (move[1] == undefined) {
+        move[1] = move[0];
     }
     
-    let randomPiece = allPieces[Math.floor(Math.random()*allPieces.length)];
-    let randomTile = board[Math.floor(Math.random()*board.length)];
+    let selectedTile = document.getElementById(move[0]);
+    let targetTile = document.getElementById(move[1]);
     
-    board[pieceIndexes[allPieces.randomPiece.findIndex()]] = 0;
-    board[randomTile] = randomPiece;
+    let selectedPiece = selectedTile.firstChild;
+    selectedTile.removeChild(selectedPiece);
+    targetTile.appendChild(selectedPiece);
     
-    return board;
+    board[move[0]] = 0;
+    board[move[1]] = pieceValue;
+    
+    if (turn == true) { 
+        turn = false; 
+    } else {
+        turn = true;
+    }
 }
