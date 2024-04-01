@@ -17,7 +17,7 @@ body {
     height: 100%;
     display: flex;
     flex-direction: column;
-    background-color: #774914;
+    background-color: var(--clr-bodyBg);
     margin: 0;
 }
 
@@ -29,7 +29,7 @@ body {
 }
 
 .p1 {
-    color: cyan;
+    color: var(--clr-mainText);
     font-family: "Brush Script MT", cursive;
     font-size: 8vh;
 }
@@ -37,7 +37,7 @@ body {
 #main-menu {
     flex: 2;
     display: flex;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: var(--clr-containerBg);
 }
 
 #start-menu {
@@ -76,6 +76,6 @@ body {
 }
 
 .descriptions {
-    color: orange;
+    color: var(--clr-text);
     margin-left: 5px;
 }

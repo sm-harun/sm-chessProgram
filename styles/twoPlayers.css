@@ -3,7 +3,7 @@
 }
 
 body {
-    background-color: #774914;
+    background-color: var(--clr-bodyBg);
     display: flex; 
     height: 100vh; 
     margin: 0;
@@ -18,7 +18,7 @@ body {
 
 .chess-board-container { 
     position: relative; 
-    box-shadow: 0 15px 15px black; 
+    box-shadow: 0 15px 15px var(--clr-boardShadow); 
 }
 
 .chess-board { 
@@ -26,18 +26,18 @@ body {
     grid-auto-flow: row;
     grid-template-columns: repeat(8, 50px); 
     grid-template-rows: repeat(8, 50px);
-    border: 15px solid #4e300d; 
+    border: 15px solid var(--clr-boardBorder); 
 } 
 
 .firstClassTiles {
-    background-color: #c18720;
+    background-color: var(--clr-brown);
     position: relative;
     width: 50px; 
     height: 50px;
 }
 
 .secondClassTiles {
-    background-color: #e2d997;
+    background-color: var(--clr-lightBrown);
     position: relative;
     width: 50px; 
     height: 50px;
@@ -69,7 +69,7 @@ body {
 #menu {
     display: flex;
     align-items: center;
-    background-color: black;
+    background-color: var(--clr-containerBg);
     opacity: 0.5;
     flex: 2;
     flex-direction: column;
@@ -83,7 +83,7 @@ body {
 }
 
 .positionButtons {
-    background-color: rgba(0,255,255,0.1);
+    background-color: var(--clr-buttonBg);
     border-color: cyan;
     width: 80%;
     height: 100px;
@@ -130,7 +130,7 @@ body {
 #menu {
     order: -1;
     flex-direction: row;
-    flex: 0;
+    flex: 1;
 }
 
 .positionButtons {
