@@ -1,0 +1,11 @@
+:root {
+    --clr-lightBrown: #e2d997;
+    --clr-brown: #c18720;
+    --clr-bodyBg: #774914;
+    --clr-boardBorder: #4e300d;
+    --clr-boardShadow: black;
+    --clr-mainText: cyan;
+    --clr-text: orange;
+    --clr-containerBg: #3C250A;
+    --clr-buttonBg: #364F53;
+}
