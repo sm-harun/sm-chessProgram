@@ -9,31 +9,47 @@
         <script src="src/gameStarter.js"></script>
         <script src="src/twoPlayers.js"></script>
     </head>
-    <body id = "body">
-        <div id = "welcome-page">
-            <p class = "p1">Chess</p>
-        </div>
-        <div id = "main-menu">
-            <div class = "middle-divs">
+    <body id = "body" class = "fuzzy-brown">
+        
+        <header>
+            <p>Chess</p>
+        </header>
+        
+        <main>
+            <div class = "img-holders">
                 <img src = "pieces/King_white.png">
             </div>
-            <div id = "start-menu">
-                <a href = "onePlayerPage.html"><button class = "menu-buttons">One Player (Unfinished!)</button></a>
-                <a href = "twoPlayersPage.html"><button class = "menu-buttons">Two Players</button></a>
-                <a href = "#"><button class = "menu-buttons">Multiplyer (Not Supported)</button></a>
-            </div>
-            <div class = "middle-divs">
+            
+            <section class = "start-menu">
+                
+                <a href = "onePlayerPage.html">
+                    <button>One Player (Unfinished!)</button>
+                </a>
+                <a href = "twoPlayersPage.html">
+                    <button>Two Players</button>
+                </a>
+                <a href = "#">
+                    <button>Multiplyer (Not Supported)</button>
+                </a>
+                
+            </section>
+            
+            <div class = "img-holders">
                 <img src = "pieces/King_black.png">
             </div>
-        </div>
-        <div id = "bottom-page">
-            <p class = "descriptions">Still Work In Progress!</p>
-            <p class = "descriptions">The GitHub <a href = "https://github.com/sm-harun/sm-chessProgram">REPOSITORY!</a></p>
-        </div>
-        <div id = "follow-tab">
-            <p class = "descriptions">Follow: </p>
-            <p class = "descriptions">My <a href = "https://github.com/sm-harun">GitHub</a></p>
-            <p class = "descriptions">My <a href = "https://twitter.com/sm_harunX">Twitter</a></p>
-        </div>
+        </main>
+        
+        <footer>
+            <div class = "description">
+                <p>Still Work In Progress!</p>
+                <p>The GitHub <a href = "https://github.com/sm-harun/sm-chessProgram">REPOSITORY!</a></p>
+            </div>
+            <div class = "follow-tab">
+                <p>Follow: </p>
+                <p>My <a href = "https://github.com/sm-harun">GitHub</a></p>
+                <p>My <a href = "https://twitter.com/sm_harunX">Twitter</a></p>
+            </div>
+        </footer>
+        
     </body>
 </html>

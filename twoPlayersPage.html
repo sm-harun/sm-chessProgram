@@ -8,22 +8,25 @@
         <script src="src/legalMoves.js"></script>
         <script src="src/gameStarter.js"></script>
     </head>
-    <body id = "background">
-        <div id = "game-container">
+    <body id = "background" class = "fuzzy-brown">
+        
+        <section class = "game-container">
             <div class="chess-board-container">
-                <div class="chess-board" id = "chessBoard"></div>
+                <div class="chess-board" id="chessBoard"></div>
             </div>
-        </div>
+        </section>
+        
         <script>
             startGame();
             onePlayer = false; 
         </script>
-        <div id = "menu">
-            <p class = "optionText" > MENU: </p>
-            <Button class = "positionButtons" id = "startPositionBoard" onClick = "confirmNewGame()">New Game</Button>
-            <Button class = "positionButtons" id = "changeTheme" onClick = "changeTheme()">Change Theme</Button>
-            <Button onClick = "exitConfirmation()" class = "positionButtons" id = "showAttackedTiles">Exit</Button>
-        </div>
-        <div id = "promotionChoice" class = "choices"></div>
+        
+        <nav>
+            <Button onClick="confirmNewGame()">New Game</Button>
+            <Button onClick="changeTheme()">Change Theme</Button>
+            <Button onClick="exitConfirmation()">Exit</Button>
+        </nav>
+        
+        <div id="promotion-choice" class="choice-popup"></div>
     </body>
 </html>
