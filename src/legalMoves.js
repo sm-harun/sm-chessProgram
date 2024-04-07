@@ -70,14 +70,10 @@
     // I added the forth parameter cause we need for the attackedSquares function.
     function legalPawnMoves(board, index, PieceIsBlack, onlyAttackedTiles) {
         
-        let unPassantBoard2 = unPassantBoard;
-        
         if (PieceIsBlack) {
             let returnOfFunction = reverseBoard(board, index);
             board = returnOfFunction[0];
             index = returnOfFunction[1];
-            returnOfFunction = (reverseBoard(unPassantBoard, 0))[0];
-            unPassantBoard2 = returnOfFunction[0];
         } else {
             let returnOfFunction = reverseBoard(board, index);
             board = returnOfFunction[0];
@@ -106,14 +102,6 @@
             }
             if (board[index-7] < 0 && !rightBorderIndexes.includes(index)) {
                 legalPawnMove[index-7] = 1;
-            }
-            
-            // Un-passant.
-            if (unPassantBoard2[index + 1] == true) {
-                legalPawnMove[index-7] = 1;
-            }
-            if (unPassantBoard2[index - 1] == true) {
-                legalPawnMove[index-9] = 1;
             }
             
         } else {
@@ -540,6 +528,39 @@
         return filteredMoves;
     }
     
+    function checkForCheck() {
+                 
+        inCheck = false;
+         
+        // All these below are needed to detect a check.
+        let kingsIndex;
+        let rightBoard;
+         
+        if (turn == true) {
+            rightBoard = board;
+             
+            for (let i = 0; i < 64; i++) {
+                 if (board[i] == 6) { kingsIndex = i; break;}
+            }
+            
+        } else if (turn == false) {
+            
+            for (let i = 0; i < 64; i++) {
+                 if (board[i] == -6) { kingsIndex = i; break;}
+            }
+            
+            let reversedBoard = reverseBoard(board, kingsIndex);
+            rightBoard = reversedBoard[0];
+            kingsIndex = reversedBoard[1]
+        }
+         
+        let attackedIndexes = attackedSquares(rightBoard, false, "Indexes");
+         
+        if (attackedIndexes.includes(kingsIndex)) {
+            inCheck = true;
+        }
+    }
+    
     function checkCastleRights(board) {
         
         if (board[60] == 0) {
@@ -576,4 +597,3 @@
 
         return [newBoard, newIndex];
     }
-    
