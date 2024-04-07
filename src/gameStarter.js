@@ -519,10 +519,18 @@ let onePlayer = false;
             }
         }
     }
+    
+    function toggleThemes() {
+    
+        if (document.body.classList.contains("fuzzy-brown")) {
+            document.body.classList.remove("fuzzy-brown");
+            document.body.classList.add("space-theme");
+        }
+    }
       
     function changeTheme() {
 
-        let promotionChoice = document.getElementById("promotionChoice");
+        let promotionChoice = document.getElementById("promotion-choice");
         promotionChoice.style.visibility = "visible";
         
         let fuzzyBrown = document.createElement("button");
