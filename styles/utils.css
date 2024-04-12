@@ -31,6 +31,8 @@
     position: relative;
     
     box-shadow: 0 15px 15px var(--clr-boardShadow); 
+    
+    transition: .5s;
 }
 
 .chess-board { 
@@ -80,6 +82,7 @@
     height: 100%; 
     object-fit: cover; 
     cursor: pointer;
+    z-index: 4;
     
     transition: .1s;
 }
@@ -96,6 +99,18 @@
     background-color: blue; 
     opacity: 0.3;
     cursor: pointer;
+    z-index: 5;
+}
+
+.check-tile {
+    position: absolute;
+    
+    width: 100%;
+    height: 100%;
+    background-color: red; 
+    opacity: 0.5;
+    cursor: pointer;
+    z-index: 3;
 }
 
 nav {
@@ -128,6 +143,7 @@ nav button {
 nav button:hover {
     background-color: cyan;
     color: black;
+    transform: scale(0.95);
 }
 
 
