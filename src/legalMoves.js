@@ -528,36 +528,40 @@
         return filteredMoves;
     }
     
-    function checkForCheck() {
+    function checkForChecks(board, turn) {
                  
         inCheck = false;
          
         // All these below are needed to detect a check.
         let kingsIndex;
         let rightBoard;
-         
+        
+        let finalIndex;
+        
         if (turn == true) {
             rightBoard = board;
              
             for (let i = 0; i < 64; i++) {
-                 if (board[i] == 6) { kingsIndex = i; break;}
+                 if (board[i] == 6) { kingsIndex = i; finalIndex = i; break;}
             }
             
         } else if (turn == false) {
             
             for (let i = 0; i < 64; i++) {
-                 if (board[i] == -6) { kingsIndex = i; break;}
+                 if (board[i] == -6) { kingsIndex = i; finalIndex = i; break;}
             }
             
             let reversedBoard = reverseBoard(board, kingsIndex);
             rightBoard = reversedBoard[0];
-            kingsIndex = reversedBoard[1]
+            kingsIndex = reversedBoard[1];
         }
          
         let attackedIndexes = attackedSquares(rightBoard, false, "Indexes");
          
         if (attackedIndexes.includes(kingsIndex)) {
-            inCheck = true;
+            return [true, finalIndex];
+        } else {
+            return [false, null];
         }
     }
     

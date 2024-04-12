@@ -78,12 +78,16 @@
          movesArray.forEach(element => element.remove()); 
          
          let allImages = document.querySelectorAll('img');
+         let boardContainer = document.getElementsByClassName('chess-board-container')[0];
          
+         // Rotates the board if it's two players playing.
          if (!onePlayer) {
              if (turn == true) {
                  allImages.forEach(image => image.style.transform = "rotate(180deg)");
+                 boardContainer.style.transform = "rotate(180deg)";
              } else {
                  allImages.forEach(image => image.style.transform = "rotate(0)");
+                 boardContainer.style.transform = "rotate(0)";
              }
          }
             
@@ -95,11 +99,27 @@
          }
          
          // Checks if we have the right to castle in every move.
-         checkCastleRights(board);
+        checkCastleRights(board);
+        
+        // Detects a check. 
+        let checkStatus = checkForChecks(board, turn);
+        
+        // This removes the check indicator if it exists.
+        if (document.getElementsByClassName('check-tile')[0]) {
+            document.getElementsByClassName('check-tile')[0].remove();
+        }
+        
+        // Assigns check indicator to the kings tile.
+        if (checkStatus[0] == true) {
+            const checkTile = document.createElement('div'); 
+            checkTile.classList.add('check-tile'); 
+            
+            document.getElementById(checkStatus[1]).appendChild(checkTile);
+        }
          
-         if (onePlayer == true) {
-             makeRandomMove(board, !playingColor);
-         }
+        if (onePlayer == true) {
+            makeRandomMove(board, !playingColor);
+        }
     }
     
     function castle(index) {
@@ -238,6 +258,8 @@
     		    removePromotionPopup();
     		});
     }
+    
+    
     
     function removePromotionPopup() {
     

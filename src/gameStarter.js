@@ -199,6 +199,8 @@ let onePlayer = false;
         let result = confirm("Do you want to start new game? It will reset this one.");
         if (result == true) {
             deployPieces(startPosition);
+            document.getElementsByClassName("chess-board-container")[0]
+            .style.transform = "rotate(0)";
             turn = true;
         }
     }
