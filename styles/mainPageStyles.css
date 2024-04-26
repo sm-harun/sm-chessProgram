@@ -38,7 +38,7 @@ main {
 }
 
 .start-menu {
-    flex: 3;
+    flex: 1;
     
     background-color: var(--clr-containerBg);
     border-radius: 20px;
@@ -48,7 +48,6 @@ main {
     flex-direction: column;
     padding-right: 50px;
     padding-left: 50px;
-
 }
 
 .start-menu button {
@@ -76,7 +75,6 @@ main {
     align-items: center;
 }
 
-
 footer {
     flex: 1;
     padding: 10px;
@@ -97,4 +95,10 @@ footer {
 footer p {
     color: var(--clr-text);
     margin-left: 5px;
+}
+
+@media (orientation: portrait) {
+    .start-menu {
+        flex: 3;
+    }
 }

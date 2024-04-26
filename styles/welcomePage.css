@@ -1,0 +1,210 @@
+body {
+    background-color: #303030;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+a:hover {
+    background-color: none;
+    text-decoration: none;
+}
+
+#nav-bar {
+    position: fixed;
+    top: 0;
+    padding: 1rem;
+    
+    width: 100vw;
+    height: 20vh;
+    background-color: var(--clr-containerBg);
+    box-shadow: .4rem .4rem .4rem .4rem black;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#nav-bar div {
+    height: 100%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+}
+
+#nav-bar div img {
+    width: 80%;
+    height: 80%;
+    object-fit: cover;
+}
+
+#nav-bar button {
+    margin-left: auto;
+    
+    height: 50%;
+    aspect-ratio: 4 / 1;
+    background: black;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    
+    transition: .3s;
+    transform: scale(1.1);
+}
+
+#title {
+    margin-left: 5rem;
+}
+
+#nav-bar button:hover {
+    transform: scale(1);
+    background-color: red;
+}
+
+#content {
+    margin-top: 20vh;
+    
+    width: 100vw;
+    height: auto;
+    
+    padding: 2rem;
+    
+    display: flex;
+}
+
+h1 {
+    color: #C76C4F;
+}
+
+h3 {
+    margin-top: 10px;
+    margin-left: 3rem;
+    color: white;
+}
+
+
+p {
+    margin-top: 5px;
+    color: #A5A5A5;
+}
+
+.text-area {
+    flex: 2;
+    
+    padding-right: 2rem;
+}
+
+.img-area {
+    flex: 1;
+}
+
+#content div img {
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+}
+
+#popularity-content {
+    width: 100vw;
+    height: auto;
+    
+    padding: 2rem;
+    
+    display: flex;
+}
+
+.popularity-text-area {
+    flex: 1;
+    
+    padding-left: 2rem;
+}
+
+.popularity-img-area {
+    flex: 1;
+    padding: 1rem;
+    
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.popularity-img-area img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+h6 {
+    color: white;
+}
+
+#competetive-content {
+    padding: 2rem;
+    
+    display: flex;
+    flex-direction: column;
+}
+
+#competetive-content-text {
+    flex: 1;
+}
+
+#players-img {
+    flex: 1;
+    
+    display: flex;
+    gap: 1rem;
+}
+
+#players-img div {
+    margin-top: .5rem;
+    
+    height: 100%;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+h5 {
+    margin-top: .5rem;
+    color: orange;
+}
+
+#players-img div img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    
+    border: 5px solid orange;
+    border-radius: 1rem;
+}
+
+#magnus-div {
+    flex: 1;
+}
+#ding-div {
+    flex: 1;
+    height: 100%;
+}
+#hikaru-div {
+    flex: 1;
+}
+
+#project-description {
+    padding: 2rem;
+}
+
+#project-description h3 {
+    text-decoration: underline;
+}
+
+#project-description ul {
+    color: #A5A5A5;
+}
+
+#project-description ul li {
+    margin-top: 5px;
+}

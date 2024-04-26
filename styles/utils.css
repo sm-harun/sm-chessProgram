@@ -1,20 +1,27 @@
-* {
+* {    
     box-sizing: border-box;
-    font-family: Garamond, serif;
     margin: 0;
     padding: 0;
+    font-family: Garamond, serif;
 }
 
 :root {
     --clr-lightBrown: #e2d997;
     --clr-brown: #c18720;
-    --clr-bodyBg: #774914;
+    /* --clr-bodyBg: #774914; */
+    --clr-bodyBg: #303030;
     --clr-boardBorder: #4e300d;
     --clr-boardShadow: black;
     --clr-mainText: cyan;
     --clr-text: orange;
     --clr-containerBg: #3C250A;
     --clr-buttonBg: #364F53;
+}
+
+.test {
+    background-color: red;
+    width: 100px;
+    height: 100px;
 }
 
 .game-container {
@@ -155,6 +162,7 @@ nav button:hover {
     right: 0;
     margin: auto;
     padding: 10px;
+    z-index: 6;
     
     width: 500px;
     height: 300px;
@@ -181,6 +189,14 @@ nav button:hover {
     align-items: center;
     
     transition: .1s;
+}
+
+.choice-popup button img {
+    width: 100%;
+    height: 100%;
+    
+    object-fit: contain;
+    cursor: pointer;
 }
 
 .choice-popup button:hover {

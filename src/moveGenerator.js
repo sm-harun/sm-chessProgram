@@ -18,7 +18,7 @@ function generateMoves(chessPiece, board) {
     let isAPawn = Math.abs(board[chessPiece.parentNode.id]) == 1;
     let isAKing = Math.abs(board[chessPiece.parentNode.id]) == 6;
     
-    for(i=0; i<64; i++) { 
+    for(let i=0; i<64; i++) { 
         
         // Filters out moves with the wrong turn.
         if (turn == true && pieceIsBlack == true) { continue; }
@@ -40,22 +40,23 @@ function generateMoves(chessPiece, board) {
             
             // Castles the king and rook.
             if (isAKing) {
-                if(pieceIsBlack && -moves.id == 2) { castle(0); }
-                if(pieceIsBlack && -moves.id == 6) { castle(7); }
-                if(!pieceIsBlack && -moves.id == 58) { castle(56); }
-                if(!pieceIsBlack && -moves.id == 62) { castle(63); }
+                if(pieceIsBlack && -moves.id == 2) { castle(0); movePiece(chessPiece, moves, clickedPiece); }
+                if(pieceIsBlack && -moves.id == 6) { castle(7); movePiece(chessPiece, moves, clickedPiece); }
+                if(!pieceIsBlack && -moves.id == 58) { castle(56); movePiece(chessPiece, moves, clickedPiece); }
+                if(!pieceIsBlack && -moves.id == 62) { castle(63); movePiece(chessPiece, moves, clickedPiece); }
             
             // Promotes the piece. 
             } else if (isAPawn) {
                 if (pieceIsBlack && -moves.id > 55) {
                     promotion(chessPiece, "black", moves, board);
-                }
-                if (!pieceIsBlack && -moves.id < 8) {
+                } else if (!pieceIsBlack && -moves.id < 8) {
                     promotion(chessPiece, "white", moves, board);
-                } 
+                } else {
+                    movePiece(chessPiece, moves, clickedPiece);
+                }
+            } else {
+                movePiece(chessPiece, moves, clickedPiece);
             }
-            
-            movePiece(chessPiece, moves, clickedPiece);
         });  
     }
 }
@@ -76,7 +77,7 @@ function movePiece(chessPiece, moves, clickedPiece) {
      const movesArray = Array.from(movesClass); 
      movesArray.forEach(element => element.remove()); 
      
-     let allImages = document.querySelectorAll('img');
+     let allImages = document.querySelectorAll('img:not(.choice-popup button img)');
      let boardContainer = document.getElementsByClassName('chess-board-container')[0];
      
      // Rotates the board if it's two players playing.
@@ -218,7 +219,7 @@ function promotion(chessPiece, pieceColor, moves, board) {
 	    }
 	    // Here it applys the moves listner after a piece has been chosen.
 	    movePiece(chessPiece, moves, clickedPiece);
-	    removePromotionPopup();
+	    hidePopup("promotion-choice");
 	});
 	
 	rookChoice.addEventListener('click', function () {
@@ -230,7 +231,7 @@ function promotion(chessPiece, pieceColor, moves, board) {
 	        clickedPiece = -4;
 	    }
 	    movePiece(chessPiece, moves, clickedPiece);
-	    removePromotionPopup();
+	    hidePopup("promotion-choice");
 	});
 	
 	bishopChoice.addEventListener('click', function () {
@@ -242,7 +243,7 @@ function promotion(chessPiece, pieceColor, moves, board) {
 	        clickedPiece = -3;
 	    }
 	    movePiece(chessPiece, moves, clickedPiece);
-	    removePromotionPopup();
+	    hidePopup("promotion-choice");
 	});
 	
 	knightChoice.addEventListener('click', function () {
@@ -254,84 +255,74 @@ function promotion(chessPiece, pieceColor, moves, board) {
 	        clickedPiece = -2;
 	    }
 	    movePiece(chessPiece, moves, clickedPiece);
-	    removePromotionPopup();
+	    hidePopup("promotion-choice");
 	});
 }
 
-function promotion2(chessPiece, pieceColor, moves, board) {
+function promotionTwo(chessPiece, pieceColor, moves, board) {
     
     let choicePopup = showPopup("promotion-choice");
-    let choices = new Array(4);
-    let choiceImg = new Array(4);
+    let choices = new Array(4).fill(null);
+    let pieceImg;
     
-    for(i = 0; i < 4; i++) {
-        choices[i] = document.createElement("button");
-        choices[i].classList.add("choiceButtons");
-		choicePopup.appendChild(choices[i]);
-    }
+    let buttonIndex = 0;
     
-    for (i = 0; i < 4; i ++) {
-        choiceImg[i] = document.createElement("img");
-        choiceImg[i].classList.add("chess-piece");
+    choices.forEach(choice => {
         
-        switch (i) {
+        choice = document.createElement("button");
+        choicePopup.appendChild(choice);
+        
+        pieceImg = document.createElement("img");
+        
+        switch (buttonIndex) {
             case 0:
-                choiceImg[i].src = "pieces/Knight_" + pieceColor + ".png";
+                pieceImg.src = "pieces/Knight_" + pieceColor + ".png";
                 break;
             case 1:
-                choiceImg[i].src = "pieces/Bishop_" + pieceColor + ".png";
+                pieceImg.src = "pieces/Bishop_" + pieceColor + ".png";
                 break;
             case 2:
-                choiceImg[i].src = "pieces/Rook_" + pieceColor + ".png";
+                pieceImg.src = "pieces/Rook_" + pieceColor + ".png";
                 break;
             case 3:
-                choiceImg[i].src = "pieces/Queen_" + pieceColor + ".png";
+                pieceImg.src = "pieces/Queen_" + pieceColor + ".png";
                 break;
         }
-        choiceImg[i].appendChild(choices[i]);
-    }
-    
-    choices.forEach((choice) => {
+        
+        choice.appendChild(pieceImg);
+        console.log(choices);
+        
         choice.addEventListener("click", function () {
             
-            let clickedPiece = choices.findIndex(choice) + 2;
+            let clickedPiece;
             
-            if (pieceColor == "black") {
-                clickedPiece = -clickedPiece;
-            }
             
-            switch (choices.findIndex(choice)) {
+            switch (choices.indexOf(choice)) {
                 case 0:
                     chessPiece.src = "pieces/Knight_" + pieceColor + ".png";
+                    clickedPiece = 2;
                     break;
                 case 1:
                     chessPiece.src = "pieces/Bishop_" + pieceColor + ".png";
+                    clickedPiece = 3;
                     break;
                 case 2:
                     chessPiece.src = "pieces/Rook_" + pieceColor + ".png";
+                    clickedPiece = 4;
                     break;
                 case 3:
                     chessPiece.src = "pieces/Queen_" + pieceColor + ".png";
+                    clickedPiece = 5;
                     break;
             }
+            if (pieceColor == "black") { clickedPiece = -clickedPiece; }
             
+            console.log(clickedPiece);
             movePiece(chessPiece, moves, clickedPiece);
-            removePromotionPopup();
+            hidePopup("promotion-choice");
         });
+        
+        
+        buttonIndex++;
     });
-}
-
-function removePromotionPopup() {
-
-    let promotionChoice = document.getElementById("promotion-choice");
-    let queenChoice = document.getElementById("queenChoice");
-    let rookChoice = document.getElementById("rookChoice");
-    let bishopChoice = document.getElementById("bishopChoice");
-    let knightChoice = document.getElementById("knightChoice");
-    
-    promotionChoice.style.visibility = "hidden";
-	queenChoice.remove();
-	rookChoice.remove();
-	bishopChoice.remove();
-	knightChoice.remove();
 }
