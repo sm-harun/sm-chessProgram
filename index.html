@@ -1,56 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Chess</title>
-        <link rel="stylesheet" href="styles/utils.css">
-        <link rel="stylesheet" href="styles/mainPageStyles.css">
-        <script src="src/legalMoves.js"></script>
-        <script src="src/gameStarter.js"></script>
-        <script src="src/twoPlayers.js"></script>
-        <script src="src/moveGenerator.js"></script>
-    </head>
-    <body id = "body" class = "fuzzy-brown">
-        
-        <header>
-            <p>Chess</p>
-        </header>
-        
-        <main>
-            <div class = "img-holders">
-                <img src = "pieces/King_white.png">
+<head>
+    <link rel="stylesheet" href="styles/utils.css">
+    <link rel="stylesheet" href="styles/welcomePage.css">
+    <title>Chess</title>
+</head>
+<body>
+    <section id = "nav-bar">
+        <div id="logo-container">
+            <img src="./img/gloryLogo.png">
+        </div>
+        <h1 id="title">Chess Program</h1>
+        <button><a href="./mainPage.html">Start Playing</a></button>
+    </section>
+    <section id = "content">
+        <div class = "text-area">
+            <h1>Welcome to chess</h1>
+            <h3>What is chess?</h3>
+            <p>Chess, the ultimate battle of wits, where every move shapes the destiny of the board. It's a captivating game of strategy and foresight, where pawns can become kings and queens fall in a single stroke. The thrill of outsmarting your opponent, predicting their every move, and orchestrating a masterful checkmate is unmatched. With each game, you delve deeper into the possibilities, honing your skills and unleashing your inner grandmaster. In the world of chess, every move is a masterpiece waiting to unfold, and every victory is a triumph of intellect and cunning.</p>
+        </div>
+        <div class = "img-area">
+            <img src = "./img/chessImage.jpeg">
+        </div>
+    </section>
+    
+    <section id="popularity-content">
+        <div class = "popularity-img-area">
+            <img src="./img/trendsGraph.png">
+            <h6>Popularity of Chess from google trends (5 years)</h6>
+        </div>
+        <div class="popularity-text-area">
+            <h3>Why play chess?</h3>
+            <p>Chess has become super popular lately, especially since COVID hit. It's like everyone suddenly discovered how cool it is. People are playing it online like crazy, on all these different platforms. It's not just for brainiacs anymore; everyone's getting into it, from kids to grandparents. Even famous folks are posting about it on social media. I guess when everything else is up in the air, chess is something you can count on. It's not just a game; it's a way to connect with people and keep your brain sharp. So yeah, it's been pretty wild to see how much love chess is getting these days.</p>
+        </div>
+    </section>
+    
+    <section id="competetive-content">
+        <div id="competetive-content-text">
+            <h3>Competetive Chess</h3>
+            <p>The competitive chess scene is no joke. It's like a whole other world where people take the game super seriously. You've got these insanely skilled players who dedicate their lives to mastering every aspect of chess. They study openings, memorize strategies, and analyze games like their lives depend on it. Tournaments are intense battles of wits, where one wrong move can cost you the game. And let me tell you, the pressure is real. These players train for hours every day, grinding away to improve their skills and climb the ranks. But it's not just about winning; it's about pushing yourself to be the best you can be. And when you see these grandmasters in action, it's like watching a masterclass in strategy and concentration. So yeah, the competitive world of chess is no joke—it's a battlefield where only the strongest survive.</p>
+        </div>
+        <div id="players-img">
+            <div id="magnus-div">
+                <img src="./img/magnus.jpeg">
+                <h5>Magnus Carlsen (5 times world champion)</h5>
             </div>
-            
-            <section class = "start-menu">
-                
-                <a href = "onePlayerPage.html">
-                    <button>One Player (Unfinished!)</button>
-                </a>
-                <a href = "twoPlayersPage.html">
-                    <button>Two Players</button>
-                </a>
-                <a href = "#">
-                    <button>Multiplyer (Not Supported)</button>
-                </a>
-                
-            </section>
-            
-            <div class = "img-holders">
-                <img src = "pieces/King_black.png">
+            <div id="ding-div">
+                <img src="./img/ding.jpg">
+                <h5>Ding Liren (1 time world champion)</h5>
             </div>
-        </main>
-        
-        <footer>
-            <div class = "description">
-                <p>Still Work In Progress!</p>
-                <p>The GitHub <a href = "https://github.com/sm-harun/sm-chessProgram">REPOSITORY!</a></p>
+            <div id="hikaru-div">
+                <img src="./img/hikaru.jpeg">
+                <h5>Hikaru Nakamura (5 times US champion)</h5>
             </div>
-            <div class = "follow-tab">
-                <p>Follow: </p>
-                <p>My <a href = "https://github.com/sm-harun">GitHub</a></p>
-                <p>My <a href = "https://twitter.com/sm_harunX">Twitter</a></p>
-            </div>
-        </footer>
-        
-    </body>
+        </div>
+    </section>
+    
+    <section id="project-Description">
+        <h1>About the project:</h1>
+        <ul>
+            <li>All the diverse moves of every piece are programed into this project. So every piece know what legal moves it has. But bots for generating actual good moves are not implemented yet and are gonna be added soon.</li>
+            <li>Currently this program works perfectly for two players with great visuals and UI.</li>
+            <li>For one player, for now the oponent is just a bot that plays randomly. Of course, that is gonna change for the future. We are planning to add diverse bots including famous bots like stockfish and mittens using their API's.</li>
+            <li>Multiplier is also another feature we are gonna add in the future, So people can play from different devices from far away places.</li>
+        </ul>
+    </section>
+</body>
 </html>

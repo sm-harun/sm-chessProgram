@@ -211,8 +211,12 @@ function showPopup(id) {
     return popup;
 }
 
-function removePopup(id) {
+function hidePopup(id) {
+    
     let popup = document.getElementById(id);
+    let choices = document.querySelectorAll("#" + id + " " + "button");
+    
+    choices.forEach(choice => choice.remove());
     popup.style.visibility = "hidden";
 }
 
