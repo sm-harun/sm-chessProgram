@@ -43,7 +43,12 @@ function generateMoves(chessPiece, board) {
                 if(pieceIsBlack && -moves.id == 2) { castle(0); movePiece(chessPiece, moves, clickedPiece); }
                 if(pieceIsBlack && -moves.id == 6) { castle(7); movePiece(chessPiece, moves, clickedPiece); }
                 if(!pieceIsBlack && -moves.id == 58) { castle(56); movePiece(chessPiece, moves, clickedPiece); }
-                if(!pieceIsBlack && -moves.id == 62) { castle(63); movePiece(chessPiece, moves, clickedPiece); }
+                if(!pieceIsBlack && -moves.id == 62) { 
+                    castle(63); 
+                    movePiece(chessPiece, moves, clickedPiece); 
+                } else {
+                    movePiece(chessPiece, moves, clickedPiece); 
+                }
             
             // Promotes the piece. 
             } else if (isAPawn) {

@@ -207,4 +207,6 @@ h5 {
 
 #project-description ul li {
     margin-top: 5px;
+    list-style-type: circle;
+    color: #A5A5A5;
 }
